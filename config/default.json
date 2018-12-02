@@ -20,11 +20,11 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://yourdomain.com",
+      "audience": "AUTH_AUDIENCE",
       "subject": "anonymous",
-      "issuer": "feathers",
+      "issuer": "AUTH_ISSUER",
       "algorithm": "HS256",
-      "expiresIn": "1d"
+      "expiresIn": "AUTH_EXPIRES"
     },
     "local": {
       "entity": "user",
