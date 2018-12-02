@@ -45,8 +45,6 @@ class Store {
             this.doingAuth = false;
             this.isAuthenticated = false;
 
-            UI.setMessage(error.message, 'danger');
-
             return {error};
         }
     };
