@@ -9,25 +9,36 @@ This application is used to both build your external APIs [RBAC](https://en.wiki
 
 You can wire your API up directly to the database or interface with users and access tokens through the [@feathersjs/client](https://docs.feathersjs.com/api/client.html).
 
-## About Packages
+## Prerequisites
+- Node 10+
+- MySql (or MariaDB)
+
+## Packages Used
 
 This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications. Feathers will handle all API requests from the client application to modify your data source as well as publish all data changes via socket.io back to a socket connection on the client if you are watching for updates. 
 
+The client is bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
 ## Getting Started
 
-Getting up and running is as easy as 1, 2, 3.
 
-1. Make sure you have [NodeJS](https://nodejs.org/) and [yarn](https://yarnpkg.com) installed.
-2. Install your dependencies
+1. Create MySql database *db_name* (and user if needed)
 
     ```
-    cd path/to/api-manager; npm install
+    CREATE DATABASE `<db_name>` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+2. Make sure you have [NodeJS](https://nodejs.org/) and [yarn](https://yarnpkg.com) installed.
+
+3. Install your dependencies
+
+    ```
+    cd path/to/api-manager; yarn install
     ```
 
-3. Start your app
+4. Start your app
 
     ```
-    npm start
+    yarn start
     ```
 
 ## Back-end Development
