@@ -1,0 +1,16 @@
+@import '../../../assets/styles/variables';
+
+.UserGroupToggles {
+    display: flex;
+    flex: 1;
+
+    .CheckItem {
+        width: 100%;
+        justify-content: flex-start;
+        align-content: space-around; 
+
+        font-family: $font-family-code;
+        font-size: 14px;
+        text-transform: none;
+    }
+}

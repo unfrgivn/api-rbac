@@ -1,0 +1,56 @@
+@import '../../../assets/styles/variables';
+
+.SideDrawer {
+	position: fixed;
+	width: 280px;
+	max-width: 70%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 200;
+	background-color: white;
+	padding: 0;
+	box-sizing: border-box;
+	transition: transform 0.3s ease-out; 
+
+	.CloseButton {
+		padding: 0;
+		position: absolute;
+		height: 2rem;
+		right: 2.5rem;
+		top: 0;
+
+		&:after {
+			cursor: pointer;
+			position: absolute;
+			font-size: 2.4rem;
+			color: $gray;
+			content: "\00d7"; /* This will render the 'X' */
+		}
+	}
+
+	.Header {
+		margin: 1rem 0;
+		text-align: center;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		font-size: 1.4rem;
+		font-weight: 300;
+		color: $gray;
+		border-bottom: solid 1px $gray-light;
+	}
+}
+
+@media (mind-width: 500px) {
+	.SideDrawer {
+		display: none;
+	}
+}
+
+.Open {
+	transform: translateX(0);
+}
+
+.Close {
+	transform: translateX(-100%);
+}

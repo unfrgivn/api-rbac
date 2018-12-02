@@ -1,0 +1,28 @@
+@import '../../assets/styles/variables';
+
+.UserRow {
+    display: flex;
+    align-content: space-between;
+    padding: .5rem;
+
+    .Username {
+        flex: 1;
+        font-family: $font-family-code;
+        font-size: 16px;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: .25rem;
+    }
+
+    &.Odd {
+        background-color: white;
+    }
+
+    &.Even {
+        background-color: $off-white;
+    }
+
+    &:hover {
+        background-color: rgba(blue, .05);
+    }
+}

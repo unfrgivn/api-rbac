@@ -1,0 +1,13 @@
+
+@import '../../assets/styles/variables';
+
+.UserTable {
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: solid 1px $gray-light;
+}
+
+.UserForm {
+    width: 100%;
+    max-width: 500px;
+}
