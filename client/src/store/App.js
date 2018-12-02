@@ -13,13 +13,14 @@ class Store {
 	constructor () {
 		//TODO: Remove this on prod
 		// Option allows self-signed localhost requests to SSL feathers socket server in some browsers
-		process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+		if (process.env.NODE_ENV !== 'development') {
+			process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+		}
 
 		const options = {
 			transports: ['websocket'],
 			pingTimeout: 3000,
 			pingInterval: 5000,
-			// ca: fs.readFileSync('server-cert.pem'),
 			rejectUnauthorized: false
 		};
 
