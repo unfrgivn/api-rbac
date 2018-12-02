@@ -20,15 +20,12 @@ class Store {
         this.doingAuth = true;
         this.isAuthenticated = false;
         
-        const totalUsers = await App.feathers.service('users').find();
-        if (totalUsers.total < 1) {
-            console.log('KICK TO SETUP');
-            // App is not initialized, kick the setup screen
-        }
-
         const localJwt = await localForage.getItem('feathers-jwt');
         if (!localJwt) {
             this.doingAuth = false;
+
+            this.isInitialized();
+
             return;
         }
 
@@ -38,10 +35,9 @@ class Store {
 
             if (response) {
                 this.isAuthenticated = true;
-                this.token = response.accessToken;
-
+                this.token = response.accessToken;                
                 this.initStoreData();
-            }
+            } 
 
             return response;
 
@@ -94,6 +90,23 @@ class Store {
         Actions.load();
         Groups.load();
         Users.load();
+    }
+
+    isInitialized = async () => {
+        try {
+            const totalUsers = await App.feathers.service('users').find({
+                query: {
+                    $limit: 0
+                }
+            });
+
+            if (totalUsers.total < 1) {
+                console.log('KICK TO SETUP');
+                // App is not initialized, kick the setup screen
+            }
+        } catch (error) {			
+            // console.log('ERROR', error);
+        }
     }
 }
 
