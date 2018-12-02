@@ -39,6 +39,9 @@ class Store {
             return response;
 
         } catch (error) {
+            // Delete the stored key since it's no good
+            await localForage.removeItem('feathers-jwt');
+
             this.doingAuth = false;
             this.isAuthenticated = false;
 
