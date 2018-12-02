@@ -30,7 +30,7 @@ app.use(cors());
 app.use(compress());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(favicon(path.join('client', 'build', 'favicon.ico')));
+// app.use(favicon(path.join('client', 'build', 'favicon.ico')));
 // Host the public folder
 app.use('/admin', express.static(path.join('client', 'build')));
 
