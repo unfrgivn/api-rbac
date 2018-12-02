@@ -1,4 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const commonHooks = require('feathers-hooks-common');
+const { NotAuthenticated } = require('@feathersjs/errors');
+
 const addAssociations = require('../../hooks/add-associations');
 
 const {
@@ -21,12 +24,21 @@ module.exports = {
 	before: {
 		all: [],
 		find: [
-			authenticate('jwt'),
-			addAssociations({
-				models: [{
-					model: 'groups',
-					as: 'groups'
-				}]
+			// If a token was included, authenticate it with the `jwt` strategy.
+			commonHooks.iff(
+				context => context.params.token,
+				[
+					authenticate('jwt'),
+					addAssociations({
+						models: [{
+							model: 'groups',
+							as: 'groups'
+						}]
+					})
+				]			  
+			// No auth token, only return the total number of users to see if app has been initialized
+			).else(context => {
+				Object.assign(context.params.query, { $limit: 0 }); 
 			})
 		],
 		get: [ 

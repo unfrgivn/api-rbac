@@ -24,9 +24,9 @@
   "scripts": {
     "postinstall": "cd client && yarn install",
     "dev": "concurrently --kill-others \"nodemon src/\" \"cd client && yarn start\"",
-    "client": "cd client && yarn start",   
-    "server": "node src/",     
-    "build": "cd client && yarn build",  
+    "client": "cd client && yarn start",
+    "server": "node src/",
+    "build": "cd client && yarn build",
     "test": "yarn eslint && NODE_ENV= yarn mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "mocha": "mocha test/ --recursive --exit"
@@ -44,6 +44,7 @@
     "compression": "^1.7.3",
     "cors": "^2.8.4",
     "dotenv": "^6.1.0",
+    "feathers-hooks-common": "^4.19.4",
     "feathers-sequelize": "^3.1.2",
     "helmet": "^3.13.0",
     "localStorage": "^1.0.4",

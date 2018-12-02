@@ -20,6 +20,12 @@ class Store {
         this.doingAuth = true;
         this.isAuthenticated = false;
         
+        const totalUsers = await App.feathers.service('users').find();
+        if (totalUsers.total < 1) {
+            console.log('KICK TO SETUP');
+            // App is not initialized, kick the setup screen
+        }
+
         const localJwt = await localForage.getItem('feathers-jwt');
         if (!localJwt) {
             this.doingAuth = false;
