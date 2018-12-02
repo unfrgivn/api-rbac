@@ -22,6 +22,7 @@ class Store {
         
         const localJwt = await localForage.getItem('feathers-jwt');
         if (!localJwt) {
+            this.doingAuth = false;
             return;
         }
 
