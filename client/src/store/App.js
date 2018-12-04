@@ -1,15 +1,20 @@
 import { observable, action } from 'mobx';
+import { persist } from 'mobx-persist';
 import io from 'socket.io-client';
 import feathers from '@feathersjs/feathers';
 import socketio from '@feathersjs/socketio-client';
 import auth from '@feathersjs/authentication-client';
 import localForage from 'localforage';
 
+import UI from './UI';
+
 const FEATHERS_HOST = process.env.FEATHERS_HOST;
 
 class Store {
 	@observable isConnecting = false; // for detecting connection to datasource API
-
+	@persist @observable isSetup = false;
+	@observable doingSetup = false;
+	
 	constructor () {
 		//TODO: Remove this on prod
 		// Option allows self-signed localhost requests to SSL feathers socket server in some browsers
@@ -49,6 +54,51 @@ class Store {
 			console.log('SOCKET DISCONNECTED FROM LOCALHOST');
 			this.isConnecting = true;
 		});
+	}
+
+	isInitialized = async () => {
+        try {
+            const totalUsers = await this.feathers.service('users').find({
+                query: {
+                    $limit: 0
+                }
+            });
+
+            if (totalUsers.total < 1) {
+                // App is not initialized, kick the setup screen
+                this.isSetup = true;        
+            }
+
+        } catch (error) {			
+            // console.log('ERROR', error);
+        }
+	}
+	
+	setup = async data => {
+
+		this.doingSetup = true;
+
+		const initData = {
+			...data,
+			init: true,
+		}
+
+		try {
+            const response = await this.feathers.service('users').create(initData);
+
+			console.log('SETUP RESPONSE', response);
+
+            this.doingSetup = false;
+            
+            return response;
+
+        } catch (error) {
+            this.doingSetup = false;
+
+            UI.setMessage(error.message, 'danger');
+
+            return false;
+        }
 	}
 }
 

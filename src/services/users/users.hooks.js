@@ -1,5 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const commonHooks = require('feathers-hooks-common');
+const { NotAuthenticated } = require('@feathersjs/errors');
 
 const addAssociations = require('../../hooks/add-associations');
 
@@ -9,7 +10,7 @@ const {
 
 // TODO: Move this to hooks folder
 const setUserData = (context) => {
-	// console.log('Creating user', context.data);
+	console.log('Creating user', context.data);
 	
 	// Set default usertype -- MOVED this to model definition)
 	// if (!context.data.usertype) {
@@ -34,7 +35,7 @@ module.exports = {
 						model: 'groups',
 						as: 'groups'
 					}]
-				})	  
+				})
 			// No auth token, only return the total number of users to see if app has been initialized
 			).else(context => {
 				Object.assign(context.params.query, { $limit: 0 }); 
@@ -49,9 +50,38 @@ module.exports = {
 				}]
 			})
 		],
-		create: [ hashPassword(), setUserData ],
-		update: [ hashPassword(),  authenticate('jwt') ],
-		patch: [ hashPassword(),  authenticate('jwt') ],
+		create: [ 
+			// If calling from setup method with no users, then allow unauthenticated call
+			commonHooks.iff(
+				context => {
+					if (context.params.authenticated === undefined) {
+						return false;
+					} else {
+						return true;
+					}
+				},
+				hashPassword(), 
+				authenticate('jwt'), 
+				setUserData	  
+			// No auth token, only return the total number of users to see if app has been initialized
+			).else(async context => {
+				// Check to see if application has been setup (has users in DB)
+				const foundUsers = await context.app.services['users'].find({
+					query: {
+						$limit: 0
+					}
+				});
+				
+				if (foundUsers && foundUsers.total === 0) {
+					return context;
+				} else {
+					return Promise.reject(new NotAuthenticated(`Only authenticated users and setup can create users`));
+				}
+			},
+			hashPassword())
+		],
+		update: [ hashPassword(), authenticate('jwt') ],
+		patch: [ hashPassword(), authenticate('jwt') ],
 		remove: [ authenticate('jwt') ]
 	},
 

@@ -24,7 +24,7 @@ class Store {
         if (!localJwt) {
             this.doingAuth = false;
 
-            this.isInitialized();
+            App.isInitialized();
 
             return;
         }
@@ -66,14 +66,14 @@ class Store {
             
             const response = await App.feathers.authenticate(payload);
 
-            this.doingAuth = false;
-
             if (response) {
                 this.isAuthenticated = true;
                 this.token = response.accessToken;
 
                 this.initStoreData();
             }
+
+            this.doingAuth = false;
 
             return response;
 
@@ -86,27 +86,27 @@ class Store {
         }
     }
 
+    @action create = async data => {
+        try {
+            const response = await App.feathers.service('users').create(data);
+
+            this.loading = false;
+            
+            return response;
+
+        } catch (error) {
+            this.loading = false;
+
+            UI.setMessage(error, 'danger');
+
+            return {error};
+        }
+    }
+
     initStoreData = async () => {
         Actions.load();
         Groups.load();
         Users.load();
-    }
-
-    isInitialized = async () => {
-        try {
-            const totalUsers = await App.feathers.service('users').find({
-                query: {
-                    $limit: 0
-                }
-            });
-
-            if (totalUsers.total < 1) {
-                console.log('KICK TO SETUP');
-                // App is not initialized, kick the setup screen
-            }
-        } catch (error) {			
-            // console.log('ERROR', error);
-        }
     }
 }
 
