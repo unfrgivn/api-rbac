@@ -6,7 +6,10 @@ import socketio from '@feathersjs/socketio-client';
 import auth from '@feathersjs/authentication-client';
 import localForage from 'localforage';
 
+import Actions from './Actions';
+import Groups from './Groups';
 import UI from './UI';
+import Users from './Users';
 
 const FEATHERS_HOST = process.env.FEATHERS_HOST;
 
@@ -47,6 +50,7 @@ class Store {
 	connect() {
 		this.feathers.io.on('connect', () => {
 			console.log('SOCKET CONNECTION MADE TO LOCALHOST');
+			this.connectStores();
 			this.isConnecting = false;
 		});
 
@@ -54,6 +58,12 @@ class Store {
 			console.log('SOCKET DISCONNECTED FROM LOCALHOST');
 			this.isConnecting = true;
 		});
+	}
+
+	connectStores() {
+		Actions.connect();
+        Groups.connect();
+		Users.connect();
 	}
 
 	isInitialized = async () => {
@@ -100,6 +110,14 @@ class Store {
             return false;
         }
 	}
+
+	initStoreData = async () => {
+		console.log('REFRESHING STORES');
+		
+        Actions.load();
+        Groups.load();
+		Users.load();
+    }
 }
 
 export default new Store();

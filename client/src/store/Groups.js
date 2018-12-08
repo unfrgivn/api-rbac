@@ -13,7 +13,7 @@ class Store {
     @observable loading = false;
     @observable isLoaded = false;
 
-    constructor() {
+    connect() {
         
         App.feathers.service('groups').on('created', response => {
             console.log('NEW GROUP CREATE EVENT', response);

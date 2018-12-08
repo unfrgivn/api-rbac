@@ -3,9 +3,6 @@ import { persist } from 'mobx-persist';
 import localForage from 'localforage';
 
 import App from './App';
-import Actions from './Actions';
-import Groups from './Groups';
-import Users from './Users';
 
 import Models from './models';
 import UI from './UI';
@@ -36,7 +33,7 @@ class Store {
             if (response) {
                 this.isAuthenticated = true;
                 this.token = response.accessToken;                
-                this.initStoreData();
+                App.initStoreData();
             } 
 
             return response;
@@ -70,7 +67,7 @@ class Store {
                 this.isAuthenticated = true;
                 this.token = response.accessToken;
 
-                this.initStoreData();
+                App.initStoreData();
             }
 
             this.doingAuth = false;
@@ -101,12 +98,6 @@ class Store {
 
             return {error};
         }
-    }
-
-    initStoreData = async () => {
-        Actions.load();
-        Groups.load();
-        Users.load();
     }
 }
 

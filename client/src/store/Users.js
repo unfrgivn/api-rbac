@@ -10,7 +10,7 @@ class Store {
     @observable loading = false;
     @observable isLoaded = false;
 
-    constructor() {
+    connect() {
         
         App.feathers.service('users').on('created', response => {
             console.log('NEW USER CREATE EVENT', response);
