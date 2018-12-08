@@ -14,10 +14,9 @@ const actionToggle = (props) => {
 
 	// const wrapperClasses = [classes.InputWrapper, (props.inline ? classes.Inline : classes.Block), props.wrapperClasses].join(' ');
 
-    const controllerName = props.controller;
-    const methodName = props.name;
+    const endpoint = props.endpoint;
 
-    const controllerMethod = `${controllerName} \\ ${methodName}`;
+    // const controllerMethod = `${controllerName} \\ ${methodName}`;
 
 	return (
 		<div className={classes.Wrapper}>
@@ -28,7 +27,7 @@ const actionToggle = (props) => {
                     onChange={props.changed}
                     id={`action_${props.id}`}
                     value={`${props.id}`} />
-                <span className={classes.Label}>{controllerMethod}</span>
+                <span className={classes.Label}>{endpoint}</span>
             </label>
 		</div>
 	);

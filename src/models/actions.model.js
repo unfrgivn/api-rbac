@@ -6,13 +6,10 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
 	const sequelizeClient = app.get('sequelizeClient');
 	const actions = sequelizeClient.define('actions', {
-		controller: {
+		endpoint: {
 			type: DataTypes.STRING,
-			allowNull: false
-		},
-		name: {
-			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: false,
+			unique: true,
 		}
 	}, {		
 		// don't delete database entries but set the newly added attribute deletedAt
@@ -37,7 +34,7 @@ module.exports = function (app) {
 		// 	as: 'groupActions',
 		// 	foreignKey: 'action_id'
 		// });
-
+		
 		actions.belongsToMany(models.groups, {
 			through: models.group_actions,
 			as: 'groups',
