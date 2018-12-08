@@ -4,8 +4,8 @@
   "public": "../client/build/",
   "debug": "DEBUG",
   "paginate": {
-    "default": 10,
-    "max": 50
+    "default": 100,
+    "max": 100
   },
   "api": {
     "baseUrl": "API_URL",
