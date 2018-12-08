@@ -7,6 +7,14 @@
     "default": 10,
     "max": 50
   },
+  "api": {
+    "baseUrl": "API_URL",
+    "endpointsRoute": "API_ENDPOINTS_ROUTE",
+    "headers": {
+				"Accept": "application/json",
+				"X-RBAC-MANAGER": true
+    }
+  },
   "mysql": "DB_CONN",
   "authentication": {
     "secret": "AUTH_SECRET",
