@@ -57,6 +57,11 @@ app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
 
+/* final catch-all route to index.html defined last */
+app.get('/admin*', (req, res) => {
+	app.sendFile(__dirname + '/index.html');
+});
+
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());
 app.use(express.errorHandler({ logger }));

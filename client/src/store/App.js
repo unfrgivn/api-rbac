@@ -17,7 +17,7 @@ class Store {
 	@observable isConnecting = false; // for detecting connection to datasource API
 	@persist @observable isSetup = false;
 	@observable doingSetup = false;
-	
+
 	constructor () {
 		//TODO: Remove this on prod
 		// Option allows self-signed localhost requests to SSL feathers socket server in some browsers
@@ -74,16 +74,18 @@ class Store {
                 }
             });
 
+						console.log(`INITIALIZING.... FOUND ${totalUsers.total} USERS`);
+
             if (totalUsers.total < 1) {
                 // App is not initialized, kick the setup screen
-                this.isSetup = true;        
+                this.isSetup = true;
             }
 
-        } catch (error) {			
+        } catch (error) {
             // console.log('ERROR', error);
         }
 	}
-	
+
 	setup = async data => {
 
 		this.doingSetup = true;
@@ -99,7 +101,7 @@ class Store {
 			console.log('SETUP RESPONSE', response);
 
             this.doingSetup = false;
-            
+
             return response;
 
         } catch (error) {
@@ -113,7 +115,7 @@ class Store {
 
 	initStoreData = async () => {
 		console.log('REFRESHING STORES');
-		
+
         Actions.load();
         Groups.load();
 		Users.load();

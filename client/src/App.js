@@ -25,13 +25,16 @@ class App extends Component {
 
 	async componentDidMount() {
 		// Attempt auto-login
-		const response = await this.props.stores.Auth.authenticate();		
+		const response = await this.props.stores.Auth.authenticate();
 	}
 
 	render() {
 		const { isSetup } = this.props.stores.App;
 		const { isAuthenticated } = this.props.stores.Auth;
 		
+		console.log('Setup:', isSetup);
+		console.log('Authenticated:', isAuthenticated);
+
 		let routes = (
 			<Switch> {/* Switch forces only one route to load then stops */}
 				<Route path="/login" component={asyncAuth} />
