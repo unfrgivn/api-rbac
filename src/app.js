@@ -40,6 +40,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(favicon(path.join('client', 'build', 'favicon.ico')));
 // Host the public folder
+app.use(express.static(path.join('client', 'build')));
 app.use('/admin', express.static(path.join('client', 'build')));
 
 // Set up Plugins and providers
