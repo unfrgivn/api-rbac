@@ -13,48 +13,39 @@ class Store {
     @observable loading = false;
     @observable isLoaded = false;
 
-    connect() {        
-        App.feathers.service('groups').on('created', this.onCreatedListner);
-        App.feathers.service('group-actions').on('created', this.onGroupActionCreatedListner);
-        App.feathers.service('group-actions').on('removed', this.onGroupActionRemovedListner);
-    }
-
-    disconnect() {
-        App.feathers.service('groups').removeListener('created', this.onCreatedListner);
-        App.feathers.service('group-actions').removeListener('created', this.onGroupActionCreatedListner);
-        App.feathers.service('group-actions').removeListener('removed', this.onGroupActionRemovedListner);
-    }
-
-    onCreatedListner = response => {
-        console.log('NEW GROUP CREATE EVENT', response);
+    connect() {
+        
+        App.feathers.service('groups').on('created', response => {
+            console.log('NEW GROUP CREATE EVENT', response);
     
-        const createdGroup = response;
-        this.groups.push(createdGroup);
-    }  
+            const createdGroup = response;
+            this.groups.push(createdGroup);
+        });
 
-    onGroupActionCreatedListner = response => {
-        console.log('NEW ACTION-GROUP CREATE EVENT', response);
+        App.feathers.service('group-actions').on('created', response => {
+            console.log('NEW ACTION-GROUP CREATE EVENT', response);
 
-        const createdGroupAction = response;
-        const actionId = +createdGroupAction.action_id;
+            const createdGroupAction = response;
+            const actionId = +createdGroupAction.action_id;
 
-        let action = Actions.actions.find(item => item.id === actionId);
+            let action = Actions.actions.find(item => item.id === actionId);
 
-        // Add action to group actions array if action item exists in store
-        if (action) {
-            this.group.actions.push(action);
-        }
-    } 
+            // Add action to group actions array if action item exists in store
+            if (action) {
+                this.group.actions.push(action);
+            }
+        });
 
-    onGroupActionRemovedListner = response => {
-        console.log('NEW ACTION-GROUP DELETED EVENT', response);
+        App.feathers.service('group-actions').on('removed', response => {
+            console.log('NEW ACTION-GROUP DELETED EVENT', response);
 
-        const deletedGroupAction = response;
-        const actionId = +deletedGroupAction.action_id;
+            const deletedGroupAction = response;
+            const actionId = +deletedGroupAction.action_id;
 
-        // Remove action from group actions array if action item exists
-        this.group.actions = this.group.actions.filter(item => item.id !== actionId);
-    } 
+            // Remove action from group actions array if action item exists
+            this.group.actions = this.group.actions.filter(item => item.id !== actionId);
+        });
+    }
 
     @action load = async () => {
         this.loading = true;

@@ -25,10 +25,6 @@ class Store {
 			process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 		}
 
-		this.init();
-	}
-	
-	async init() {
 		const options = {
 			transports: ['websocket'],
 			pingTimeout: 3000,
@@ -54,6 +50,7 @@ class Store {
 	connect() {
 		this.feathers.io.on('connect', () => {
 			console.log('SOCKET CONNECTION MADE TO LOCALHOST');
+			this.connectStores();
 			this.isConnecting = false;
 		});
 
@@ -63,9 +60,6 @@ class Store {
 		});
 	}
 
-	/**
-	 * Enable socket listeners for individual stores
-	 */
 	connectStores() {
 		Actions.connect();
         Groups.connect();
