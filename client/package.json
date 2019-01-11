@@ -7,8 +7,10 @@
     "@babel/plugin-proposal-decorators": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
     "@feathersjs/authentication-client": "^1.0.8",
+    "@feathersjs/feathers": "^3.3.1",
     "@feathersjs/socketio-client": "^1.1.5",
     "@svgr/webpack": "2.4.1",
+    "add": "^2.0.6",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
     "babel-jest": "23.6.0",
@@ -60,13 +62,15 @@
     "reactstrap": "^6.5.0",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
+    "socket.io-client": "^2.2.0",
     "style-loader": "0.23.0",
     "terser-webpack-plugin": "1.1.0",
     "url-loader": "1.1.1",
     "webpack": "4.19.1",
     "webpack-dev-server": "3.1.9",
     "webpack-manifest-plugin": "2.0.4",
-    "workbox-webpack-plugin": "3.6.3"
+    "workbox-webpack-plugin": "3.6.3",
+    "yarn": "^1.13.0"
   },
   "scripts": {
     "start": "node scripts/start.js",
