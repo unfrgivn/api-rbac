@@ -21,6 +21,8 @@ const hydrate = create({
 
 hydrate('auth', Stores.Auth)
     .then(() => {
+	 Stores.App.connectStores();
+	  	
 	  const app = (
 			<Provider stores={Stores}>
 				<BrowserRouter basename="/admin">

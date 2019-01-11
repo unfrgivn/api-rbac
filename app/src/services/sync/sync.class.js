@@ -5,6 +5,9 @@ class Service {
 	constructor (options) {
 		this.options = options || {};
 		this.apiConfig = options.apiConfig || null;
+
+		// Define custom socket events
+		this.events = ['synced'];
 	}
 
 	async find() {
@@ -90,9 +93,14 @@ class Service {
 						this.app.service('/actions').remove(actionId);
 					}
 				});
+
+				return actionSearch;
 				
 			})
 			.catch(error => {error});
+
+		// Send custom socket event
+		this.emit('synced', response);
 
 		return true;
 	}

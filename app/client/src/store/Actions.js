@@ -11,24 +11,16 @@ class Store {
 
     connect() {
         console.log('ACTIONS CONNECTED');
-        
-        App.feathers.service('actions').on('created', response => {
-            console.log('NEW ACTION CREATE EVENT', response);
-    
-            const createdAction = response;
-            this.actions.push(createdAction);
-        });
-
-        App.feathers.service('actions').on('deleted', response => {
-            console.log('NEW ACTION DELETE EVENT', response);
-    
-            const deletedAction = response;
-            // const deleteActionItem = deletedActionSearch.find(item => item.endpoint === endpoint);
-						// const deletedActionId = +deleteActionItem.id; 
-
-            this.actions.push(deletedAction);
-        });
+        App.feathers.service('sync').on('synced', this.onSyncedListner);
     }
+    
+    disconnect() {
+        App.feathers.service('actions').removeListener('synced', this.onSyncedListner);
+    }
+
+    onSyncedListner = response => {
+        console.log('NEW SYNC EVENT', response);
+    }   
 
     @action load = async () => {
         this.loading = true;
@@ -80,7 +72,7 @@ class Store {
 
             this.isSyncing = false;
             
-            App.initStoreData();
+            // App.initStoreData();
 
             return response;
 
