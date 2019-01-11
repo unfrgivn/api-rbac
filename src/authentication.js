@@ -2,7 +2,6 @@ const authentication = require('@feathersjs/authentication');
 const jwt = require('@feathersjs/authentication-jwt');
 const local = require('@feathersjs/authentication-local');
 
-
 module.exports = function (app) {
 	const config = app.get('authentication');
 
@@ -17,9 +16,6 @@ module.exports = function (app) {
 	app.service('authentication').hooks({
 		before: {
 			create: [
-				context => {
-					console.log('Creating user', context.data);
-				},
 				authentication.hooks.authenticate(config.strategies)
 			],
 			remove: [
@@ -29,7 +25,7 @@ module.exports = function (app) {
 		after: {
 			create: [
 				context => {
-					//context.result.foo = 'bar';
+					// context.result.foo = 'bar';
 				}
 			]
 		}

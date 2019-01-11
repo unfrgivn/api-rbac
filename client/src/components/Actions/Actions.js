@@ -47,8 +47,7 @@ class Actions extends Component {
                 const action = Actions.actions[key];
                 actionsArray.push({
                     id: action.id,
-                    controller: action.controller,
-                    name: action.name,
+                    endpoint: action.endpoint,
                     checked: groupActionIds.indexOf(action.id) > -1,
                 });
             }
@@ -57,8 +56,7 @@ class Actions extends Component {
                 <ActionToggle 
                     key={action.id}
                     id={action.id}
-                    controller={action.controller} 
-                    name={action.name}
+                    endpoint={action.endpoint}
                     checked={action.checked}
                     changed={event => this.onActionToggleChange(event)} />
             ));

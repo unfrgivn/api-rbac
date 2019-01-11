@@ -2,19 +2,31 @@ import { observable, action } from 'mobx';
 import { persist } from 'mobx-persist';
 
 import App from './App';
-
+import UI from './UI';
 class Store {
     @observable actions = [];
     @observable loading = false;
     @observable isLoaded = false;
+    @observable isSyncing = false;
 
-    constructor() {
+    connect() {
+        console.log('ACTIONS CONNECTED');
         
         App.feathers.service('actions').on('created', response => {
             console.log('NEW ACTION CREATE EVENT', response);
     
             const createdAction = response;
             this.actions.push(createdAction);
+        });
+
+        App.feathers.service('actions').on('deleted', response => {
+            console.log('NEW ACTION DELETE EVENT', response);
+    
+            const deletedAction = response;
+            // const deleteActionItem = deletedActionSearch.find(item => item.endpoint === endpoint);
+						// const deletedActionId = +deleteActionItem.id; 
+
+            this.actions.push(deletedAction);
         });
     }
 
@@ -25,8 +37,7 @@ class Store {
             const response = await App.feathers.service('actions').find({
                 query: {
                     $sort: {
-                      controller: 1,
-                      name: 1,
+                      endpoint: 1,
                     }
                   }
             });
@@ -57,6 +68,27 @@ class Store {
 
         } catch (error) {
             this.loading = false;
+            return {error};
+        }
+    }
+
+    @action sync = async () => {
+        this.isSyncing = true;
+
+        try {
+            const response = await App.feathers.service('sync').find();
+
+            this.isSyncing = false;
+            
+            App.initStoreData();
+
+            return response;
+
+        } catch (error) {
+            this.isSyncing = false;
+
+            UI.setMessage(error.message, 'danger');
+
             return {error};
         }
     }

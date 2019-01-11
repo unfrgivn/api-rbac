@@ -9,18 +9,18 @@ import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
-import classes from './Auth.scss';
+import classes from './Setup.scss';
 
 @inject('stores')
 @observer @autobind
-class Auth extends Component {
+class Setup extends Component {
 	state = {
 		controls: {
 			username: {
 				elementType: 'input',
 				elementConfig: {
 					type: 'text',
-					placeholder: 'Username'
+					placeholder: 'Admin Username'
 				},
 				value: '',
 				validation: {
@@ -32,7 +32,7 @@ class Auth extends Component {
 				elementType: 'input',
 				elementConfig: {
 					type: 'password',
-					placeholder: 'Password'
+					placeholder: 'Admin Password'
 				},
 				value: '',
 				validation: {
@@ -41,8 +41,7 @@ class Auth extends Component {
 				},
 				valid: false
 			}
-		},
-		isSignup: false
+		}
 	};
 
 	inputChangedHandler = (event, controlName) => {
@@ -64,41 +63,26 @@ class Auth extends Component {
 		const username = this.state.controls.username.value;
 		const password = this.state.controls.password.value;
 		
-		const { Auth } = this.props.stores;
+		const { App } = this.props.stores;
 
-		const response = await Auth.login(username, password);
+		const response = await App.setup({
+			username,
+			password,
+			usertype: 'admin'
+        });
 		
-		if (response.error) {
+		if (response) {
+            // If successful creation, log user in
+            await this.props.stores.Auth.login(username, password);
 
-			console.log('AUTH ERROR', response.error);
-
-		} else {
-
-			console.log('AUTH RESPONSE', response);
-
+            // We are no longer in setup mode
+            this.props.stores.App.isSetup = false;
 		}
-		
-		// try {
-		// 	if(!credentials) {
-		// 		// Try to authenticate using the JWT from localStorage
-		// 		await this.client.authenticate();
-		// 	} else {
-		// 		// If we get login information, add the strategy we want to use for login
-		// 		const payload = Object.assign({ strategy: 'local' }, credentials);
-	
-		// 		await this.client.authenticate(payload);
-		// 	}
-		// } catch(error) {
-		// 	// If we got an error, show the login page
-		// 	// showLogin(error);
-		// }
-
-		// this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);
 	}
 
 	render() {
 
-		const { isAuthenticated, doingAuth } = this.props.stores.Auth;
+        const { isSetup, doingSetup } = this.props.stores.App;
 		
 		const formElementsArray = [];
 		for (let key in this.state.controls) {
@@ -122,25 +106,27 @@ class Auth extends Component {
 				classes="form-control" />
 		));
 
-		if (doingAuth) {
+		if (doingSetup) {
 			form = <Spinner />;
 		}
 
-		let authRedirect = null;
-		if (isAuthenticated) {
-			authRedirect = <Redirect to='/' />;
+		let setupRedirect = null;
+		if (!isSetup) {
+			setupRedirect = <Redirect to='/' />;
 		}
 
 		return (			
-			<div className={classes.Auth}>
-				{authRedirect}
+			<div className={classes.Setup}>
+				{setupRedirect}
+                <h2>Initial Setup</h2>
+                <p>Start by creating the admin user</p>
 				<form onSubmit={this.submitHandler}>
 					{form}
-					<Button className="btn btn-success btn-outline-success btn-block" loading={doingAuth}>Login</Button>
+					<Button className="btn btn-success btn-outline-success btn-block" loading={doingSetup}>Get Started</Button>
 				</form>
 			</div>
 		);
 	}
 }
 
-export default Auth;
+export default Setup;

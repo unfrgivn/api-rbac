@@ -24,13 +24,21 @@ const app = express(feathers());
 
 // Load app configuration
 app.configure(configuration());
+
+// Validate install
+const connectionString = app.get('mysql');
+if (!connectionString || connectionString === 'DB_CONN') {
+	console.error('Missing Database, please check the config');
+	process.exit(0);
+}
+
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet());
 app.use(cors());
 app.use(compress());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(favicon(path.join('client', 'build', 'favicon.ico')));
+// app.use(favicon(path.join('client', 'build', 'favicon.ico')));
 // Host the public folder
 app.use('/admin', express.static(path.join('client', 'build')));
 

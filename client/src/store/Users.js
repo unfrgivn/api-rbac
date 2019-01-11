@@ -10,11 +10,11 @@ class Store {
     @observable loading = false;
     @observable isLoaded = false;
 
-    constructor() {
+    connect() {
         
         App.feathers.service('users').on('created', response => {
             console.log('NEW USER CREATE EVENT', response);
-    
+
             const createdUser = response;
             this.users.push(createdUser);
 
@@ -97,7 +97,7 @@ class Store {
         } catch (error) {
             this.loading = false;
 
-            UI.setMessage(error, 'danger');
+            UI.setMessage(error.message, 'danger');
 
             return {error};
         }

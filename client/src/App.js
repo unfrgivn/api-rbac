@@ -6,6 +6,7 @@ import { inject, observer } from 'mobx-react';
 import asyncComponent from './hoc/asyncComponent/asyncComponent';
 
 import Layout from './hoc/Layout/Layout';
+import SetupScreen from './containers/Setup/Setup';
 import Dashboard from './containers/Dashboard/Dashboard';
 import UsersScreen from './containers/UsersScreen/UsersScreen';
 import GroupsScreen from './containers/GroupsScreen/GroupsScreen';
@@ -24,10 +25,11 @@ class App extends Component {
 
 	async componentDidMount() {
 		// Attempt auto-login
-		await this.props.stores.Auth.authenticate();
+		const response = await this.props.stores.Auth.authenticate();		
 	}
 
 	render() {
+		const { isSetup } = this.props.stores.App;
 		const { isAuthenticated } = this.props.stores.Auth;
 		
 		let routes = (
@@ -48,6 +50,16 @@ class App extends Component {
 					<Route path="/users" exact component={UsersScreen} />
 					<Redirect to="/" />{/*Redirect unknown routes to home*/}
 					{/* <Route render={() => <h1>Not Found</h1>} />				 */} */}
+				</Switch>
+			);
+		}
+
+		if (isSetup) {
+			// console.log('setting route setup');
+			routes = (
+				<Switch>
+					<Route path="/setup" component={SetupScreen} />
+					<Redirect to="/setup" />
 				</Switch>
 			);
 		}

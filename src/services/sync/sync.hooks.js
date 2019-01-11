@@ -1,10 +1,7 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
-
 module.exports = {
 	before: {
-		all: [ authenticate('jwt') ],
+		all: [],
 		find: [],
-		get: [],
 		create: [],
 		update: [],
 		patch: [],
@@ -22,7 +19,12 @@ module.exports = {
 	},
 
 	error: {
-		all: [],
+		all: [
+			error => {
+				console.log('ERRRRRRRRROR', error);
+				throw new Error('Simulated error');
+			}
+		],
 		find: [],
 		get: [],
 		create: [],

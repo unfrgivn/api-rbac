@@ -1,12 +1,11 @@
 import { observable, action } from 'mobx';
 import { persist } from 'mobx-persist';
+import localForage from 'localforage';
 
 import App from './App';
-import Actions from './Actions';
-import Groups from './Groups';
-import Users from './Users';
 
 import Models from './models';
+import UI from './UI';
 
 class Store {
     @observable user = new Models.User();
@@ -18,20 +17,31 @@ class Store {
         this.doingAuth = true;
         this.isAuthenticated = false;
         
+        const localJwt = await localForage.getItem('feathers-jwt');
+        if (!localJwt) {
+            this.doingAuth = false;
+
+            App.isInitialized();
+
+            return;
+        }
+
         try {
             // Try to authenticate using the JWT from localStorage
             const response = await App.feathers.authenticate();
 
             if (response) {
                 this.isAuthenticated = true;
-                this.token = response.accessToken;
-
-                this.initStoreData();
-            }
+                this.token = response.accessToken;                
+                App.initStoreData();
+            } 
 
             return response;
 
         } catch (error) {
+            // Delete the stored key since it's no good
+            await localForage.removeItem('feathers-jwt');
+
             this.doingAuth = false;
             this.isAuthenticated = false;
 
@@ -53,28 +63,41 @@ class Store {
             
             const response = await App.feathers.authenticate(payload);
 
-            this.doingAuth = false;
-
             if (response) {
                 this.isAuthenticated = true;
                 this.token = response.accessToken;
 
-                this.initStoreData();
+                App.initStoreData();
             }
+
+            this.doingAuth = false;
 
             return response;
 
         } catch (error) {
             this.doingAuth = false;
 
+            UI.setMessage(error.message, 'danger');
+
             return {error};
         }
     }
 
-    initStoreData = async () => {
-        Actions.load();
-        Groups.load();
-        Users.load();
+    @action create = async data => {
+        try {
+            const response = await App.feathers.service('users').create(data);
+
+            this.loading = false;
+            
+            return response;
+
+        } catch (error) {
+            this.loading = false;
+
+            UI.setMessage(error, 'danger');
+
+            return {error};
+        }
     }
 }
 
