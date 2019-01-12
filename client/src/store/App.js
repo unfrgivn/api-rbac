@@ -11,8 +11,7 @@ import Groups from './Groups';
 import UI from './UI';
 import Users from './Users';
 
-const FEATHERS_HOST = process.env.FEATHERS_HOST;
-
+const FEATHERS_HOST = window.location.host; //process.env.FEATHERS_HOST;
 class Store {
 	@observable isConnecting = false; // for detecting connection to datasource API
 	@persist @observable isSetup = false;
@@ -32,6 +31,7 @@ class Store {
 			rejectUnauthorized: false
 		};
 
+		console.log(`CONNECTING TO ${FEATHERS_HOST}`);
 		const socket = io(FEATHERS_HOST, options);
 
 		this.feathers = feathers()

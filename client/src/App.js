@@ -31,9 +31,6 @@ class App extends Component {
 	render() {
 		const { isSetup } = this.props.stores.App;
 		const { isAuthenticated } = this.props.stores.Auth;
-		
-		console.log('Setup:', isSetup);
-		console.log('Authenticated:', isAuthenticated);
 
 		let routes = (
 			<Switch> {/* Switch forces only one route to load then stops */}
