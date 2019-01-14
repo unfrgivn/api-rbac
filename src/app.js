@@ -40,6 +40,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(favicon(path.join('client', 'build', 'favicon.ico')));
 // Host the public folder
+app.use(express.static(path.join('client', 'build')));
 app.use('/admin', express.static(path.join('client', 'build')));
 
 // Set up Plugins and providers
@@ -55,6 +56,11 @@ app.configure(authentication);
 app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
+
+/* final catch-all route to index.html defined last */
+app.get('/admin*', (req, res) => {
+	res.sendFile(path.join('client', 'build', 'index.html'));
+});
 
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());

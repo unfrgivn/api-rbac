@@ -34,6 +34,10 @@ module.exports = {
 					models: [{
 						model: 'groups',
 						as: 'groups'
+					},
+					{
+						model: 'keys',
+						as: 'keys'
 					}]
 				})
 			// No auth token, only return the total number of users to see if app has been initialized
@@ -47,6 +51,10 @@ module.exports = {
 				models: [{
 					model: 'groups',
 					as: 'groups'
+				},
+				{
+					model: 'keys',
+					as: 'keys'
 				}]
 			})
 		],

@@ -1,0 +1,17 @@
+version: '3'
+services:
+  client:
+    build: .
+    container_name: api-rbac
+    ports:
+      - "3050:3050"
+    environment:
+      - APP_HOST=localhost
+      - APP_PORT=3050
+      - HTTPS=false
+      - AUTH_SECRET=CHANGEME
+      - AUTH_AUDIENCE=http://localhost
+      - AUTH_ISSUER=CHANGEME #application-name
+      - AUTH_EXPIRES=1d
+      - DB_CONN=mysql://<username>:<password>@host.docker.internal:3306/<dbname> #host.docker.internal specifically for Docker for Mac 18+
+      - DEBUG=false

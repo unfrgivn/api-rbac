@@ -21,7 +21,7 @@ class AddUser extends Component {
 					options: [
 						{value: '', displayValue: '-- Select User Type --'},
 						{value: 'user', displayValue: 'User'},
-						{value: 'service', displayValue: 'Service Account'}
+						{value: 'service_account', displayValue: 'Service Account'}
 					]
 				},
 				value: '',
@@ -54,29 +54,17 @@ class AddUser extends Component {
 				},
 				valid: false
 			},
-			maximuser: {
+			userdata: {
 				elementType: 'input',
 				elementConfig: {
 					type: 'text',
-					placeholder: 'Maxim Username'
+					placeholder: 'User JSON Data'
 				},
 				value: '',
 				validation: {
-					required: true
+					required: false
 				},
-				valid: false
-			},
-			maximpass: {
-				elementType: 'input',
-				elementConfig: {
-					type: 'text',
-					placeholder: 'Maxim Password'
-				},
-				value: '',
-				validation: {
-					required: true
-				},
-				valid: false
+				valid: true
 			},
 		},
 		formIsValid: false,
@@ -111,8 +99,8 @@ class AddUser extends Component {
 		const username = this.state.controls.username.value;
 		const password = this.state.controls.password.value;
 		const usertype = this.state.controls.usertype.value;
-		const maximuser = this.state.controls.maximuser.value;
-		const maximpass = this.state.controls.maximpass.value;
+		//TODO ensure that this is going in as valid JSON data and not an escaped string
+		const userdata = this.state.controls.userdata.value;
 		
 		const { Users } = this.props.stores;
 
@@ -120,8 +108,7 @@ class AddUser extends Component {
 			username,
 			password,
 			usertype,
-			maximuser,
-			maximpass,
+			userdata,
         });
 		
 		if (response.error) {

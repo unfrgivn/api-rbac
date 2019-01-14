@@ -22,11 +22,11 @@
     "yarn": ">= 0.18.0"
   },
   "scripts": {
-    "postinstall": "cd client && yarn install",
-    "dev": "concurrently --kill-others \"nodemon src/\" \"cd client && yarn start\"",
-    "client": "cd client && yarn start",
+    "postinstall": "yarn --cwd client install",
+    "start": "concurrently --kill-others \"nodemon src/\" \"yarn --cwd client start\"",
+    "client": "yarn --cwd client start",
     "server": "node src/",
-    "build": "cd client && yarn build",
+    "build": "yarn --cwd client build",
     "test": "yarn eslint && NODE_ENV= yarn mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "mocha": "mocha test/ --recursive --exit"
@@ -36,6 +36,7 @@
     "@feathersjs/authentication-client": "^1.0.8",
     "@feathersjs/authentication-jwt": "^2.0.6",
     "@feathersjs/authentication-local": "^1.2.7",
+    "@feathersjs/cli": "^3.9.0",
     "@feathersjs/configuration": "^2.0.4",
     "@feathersjs/errors": "^3.3.4",
     "@feathersjs/express": "^1.2.7",

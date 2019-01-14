@@ -5,18 +5,12 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
 	const sequelizeClient = app.get('sequelizeClient');
-	const applications = sequelizeClient.define('applications', {
-		code: {
-			type: DataTypes.STRING,
-			allowNull: false
-		},
-		name: {
-			type: DataTypes.STRING,
-			allowNull: false
-		},
-		applicationdata: {
-			type: DataTypes.JSON
-		},
+	const userKeys = sequelizeClient.define('user_keys', {
+		id: {
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+			autoIncrement: true
+		}
 	}, {
 		// don't use camelcase for automatically added attributes but underscore style
 		// so updatedAt will be updated_at
@@ -29,10 +23,10 @@ module.exports = function (app) {
 	});
 
 	// eslint-disable-next-line no-unused-vars
-	applications.associate = function (models) {
+	userKeys.associate = function (models) {
 		// Define associations here
 		// See http://docs.sequelizejs.com/en/latest/docs/associations/
 	};
 
-	return applications;
+	return userKeys;
 };

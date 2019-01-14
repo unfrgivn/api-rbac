@@ -6,14 +6,18 @@ const groupUsers = require('./group-users/group-users.service.js');
 const tokens = require('./tokens/tokens.service.js');
 const applications = require('./applications/applications.service.js');
 const sync = require('./sync/sync.service.js');
+const keys = require('./keys/keys.service.js');
+const userKeys = require('./user-keys/user-keys.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
-	app.configure(users);
-	app.configure(groups);
-	app.configure(groupActions);
-	app.configure(actions);
-	app.configure(groupUsers);
-	app.configure(tokens);
-	app.configure(applications);
-	app.configure(sync);
+    app.configure(users);
+    app.configure(groups);
+    app.configure(groupActions);
+    app.configure(actions);
+    app.configure(groupUsers);
+    app.configure(tokens);
+    app.configure(applications);
+    app.configure(sync);
+    app.configure(keys);
+    app.configure(userKeys);
 };
