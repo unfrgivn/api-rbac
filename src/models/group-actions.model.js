@@ -7,11 +7,11 @@ module.exports = function (app) {
 	const sequelizeClient = app.get('sequelizeClient');
 	const groupActions = sequelizeClient.define('group_actions', {
 		id: {
-			type: Sequelize.INTEGER,
+			type: DataTypes.INTEGER,
 			primaryKey: true,
 			autoIncrement: true
 		},
-	}, {	
+	}, {
 		// don't use camelcase for automatically added attributes but underscore style
 		// so updatedAt will be updated_at
 		underscored: true,

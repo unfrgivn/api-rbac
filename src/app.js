@@ -59,7 +59,7 @@ app.configure(channels);
 
 /* final catch-all route to index.html defined last */
 app.get('/admin*', (req, res) => {
-	app.sendFile(__dirname + '/index.html');
+	res.sendFile(path.join('client', 'build', 'index.html'));
 });
 
 // Configure a middleware for 404s and the error handler

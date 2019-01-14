@@ -6,7 +6,6 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
 	const sequelizeClient = app.get('sequelizeClient');
 	const users = sequelizeClient.define('users', {
-	
 		username: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -20,14 +19,10 @@ module.exports = function (app) {
 			type: DataTypes.STRING,
 			defaultValue: 'user',
 		},
-		maximuser: {
-			type: DataTypes.STRING
-		},
-		maximpass: {
-			type: DataTypes.STRING
-		},
-	
-	}, {		
+		userdata: {
+			type: DataTypes.JSON
+		},	
+	}, {
 		// don't delete database entries but set the newly added attribute deletedAt
 		// to the current date (when deletion was done). paranoid will only work if
 		// timestamps are enabled
@@ -50,6 +45,12 @@ module.exports = function (app) {
 		users.belongsToMany(models.groups, {
 			through: models.group_users,
 			as: 'groups',
+			foreignKey: 'user_id'
+		});
+
+		users.belongsToMany(models.keys, {
+			through: models.user_keys,
+			as: 'keys',
 			foreignKey: 'user_id'
 		});
 	};
