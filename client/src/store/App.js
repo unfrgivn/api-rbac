@@ -8,11 +8,14 @@ import localForage from 'localforage';
 
 import Actions from './Actions';
 import Groups from './Groups';
+import Keys from './Keys';
 import UI from './UI';
 import Users from './Users';
 
-const FEATHERS_HOST = window.location.host; //process.env.FEATHERS_HOST;
+// When in development use the ENV-specificed host if exists, otherwsie socket server is same host/port as client 
+const FEATHERS_HOST = process.env.FEATHERS_HOST || window.location.host;
 class Store {
+	@observable socketListenersConnected = false;
 	@observable isConnecting = false; // for detecting connection to datasource API
 	@persist @observable isSetup = false;
 	@observable doingSetup = false;
@@ -61,9 +64,15 @@ class Store {
 	}
 
 	connectStores() {
-		Actions.connect();
-        Groups.connect();
-		Users.connect();
+		// Don't reconnect store listeners or they will stack
+		if (!this.socketListenersConnected) {
+			Actions.connect();
+			Groups.connect();
+			Keys.connect();
+			Users.connect();
+
+			this.socketListenersConnected = true;
+		}
 	}
 
 	isInitialized = async () => {

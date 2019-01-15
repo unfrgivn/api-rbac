@@ -13,16 +13,22 @@ import classes from './Layout.scss';
 class Layout extends Component {
 
 	sideDrawerToggleHandler = () => {
-		this.props.stores.UI.showSideDrawer = !this.props.stores.UI.showSideDrawer;
+		const { UI } = this.props.stores;
+		UI.showSideDrawer = !UI.showSideDrawer;
 	}
 
 	sideDrawerClosedHandler = () => {
-		this.props.stores.UI.showSideDrawer = false;
+		const { UI } = this.props.stores;
+		UI.showSideDrawer = false;
 	}
 
 	render () {
-		const isAuthenticated = this.props.stores;
-		const { showSideDrawer, messages } = this.props.stores.UI; 
+		const { App, Auth, UI } = this.props.stores;
+		const { isAuthenticated } = Auth;
+		const { showSideDrawer, messages } = UI; 
+
+		let messageConnection = App.isConnecting ? <div className="alert alert-warning">Disconnected from server</div> : ''; 
+		
 		let messageBar = messages.length ? messages.map((message, index) => {
 			return <div key={index} className={["alert", `alert-${message.type}`].join(' ')}>{message.text}</div>;
 		}) : null;
@@ -36,6 +42,7 @@ class Layout extends Component {
 					isAuth={isAuthenticated}
 					open={showSideDrawer} closed={this.sideDrawerClosedHandler} />
 				<main className={classes.Content}>
+					{messageConnection}
 					{messageBar}
 					{ this.props.children }
 				</main>
