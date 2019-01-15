@@ -9,6 +9,10 @@ module.exports = function (app) {
 		key: {
 			type: DataTypes.STRING(500),
 			allowNull: false
+		},
+		secret: {
+			type: DataTypes.STRING(500),
+			allowNull: false
 		}
 	}, {
 		// don't delete database entries but set the newly added attribute deletedAt

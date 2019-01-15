@@ -10,7 +10,7 @@ class Service {
 	async find() {
 		// Make call to API or other to get list of endpoints
 		const endpoint = this.apiConfig.endpointsRoute;
-
+		
 		const axiosClient = axios.create({
 			baseURL: this.apiConfig.baseUrl,
 			withCredentials: true
@@ -24,6 +24,7 @@ class Service {
 
 		const response = await axiosClient.get(endpoint, axiosConfig)
 			.then(async response => {
+				console.log(response.data);
 				// Expects an array of endpoints 
 				const apiEndpoints = response.data;
 
@@ -92,7 +93,10 @@ class Service {
 				});
 				
 			})
-			.catch(error => {error});
+			.catch(error => {
+				console.log(error);
+				return error
+			});
 
 		return true;
 	}

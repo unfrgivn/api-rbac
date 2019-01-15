@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {autobind} from 'core-decorators';
 import { inject, observer } from 'mobx-react';
 
+import {NavLink} from 'react-router-dom';
+
+import TextButton from '../UI/TextButton/TextButton';
 import UserGroupToggles from './UserGroupToggles/UserGroupToggles';
 
 import Input from '../UI/Input/Input';
@@ -25,6 +28,11 @@ class UserTable extends Component {
         }
     }
 
+    setUser = (userId) => {
+        const { Users } = this.props.stores;
+        Users.setCurrentUser(userId);
+    }
+
     render() {
         let content = <Spinner />;
         
@@ -41,6 +49,8 @@ class UserTable extends Component {
                 <div key={user.id} className={[classes.UserRow, rowStyle].join(' ')}>
                     <div className={classes.Username}>{user.username}</div>
                     {userGroupToggles}
+                    
+                    <TextButton clicked={() => this.setUser(user.id)}>Keys</TextButton>
                 </div>
             );
         });

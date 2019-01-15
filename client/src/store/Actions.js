@@ -78,6 +78,8 @@ class Store {
         try {
             const response = await App.feathers.service('sync').find();
 
+            console.log('ACTIONS SYNCED', response);
+
             this.isSyncing = false;
             
             App.initStoreData();
