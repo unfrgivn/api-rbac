@@ -7,6 +7,7 @@ import UI from './UI';
 
 class Store {
     @observable users = [];
+    @observable currentUserId = null;
     @observable loading = false;
     @observable isLoaded = false;
 
@@ -101,6 +102,19 @@ class Store {
 
             return {error};
         }
+    }
+
+    @action setCurrentUser = userId => {
+        this.currentUserId = userId;
+    }
+
+    @action getCurrentUser = () => {
+        const userIndex = this.users.findIndex(user => user.id === this.currentUserId);
+        return this.users[userIndex];
+    }
+
+    @action resetCurrentUser = () => {
+        this.currentUserId = null;
     }
 
     @action addGroup = async (userId, groupId = null) => {
