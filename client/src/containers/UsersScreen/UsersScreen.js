@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 
 import UserTable from '../../components/Users/UserTable'; 
 import AddUser from '../../components/Users/AddUser/AddUser';
+import UserKeys from '../../components/Users/UserKeys/UserKeys';
 
 import classes from './UsersScreen.scss';
 
@@ -12,16 +13,33 @@ import classes from './UsersScreen.scss';
 class UsersScreen extends Component {
 
     render() {
+
+        let content = null;
+
+        const { Users } = this.props.stores;
+        const { currentUserId } = Users;
+
+        if (currentUserId) {
+            content = <UserKeys />;
+
+        } else {
+            content = (
+                <div>
+                    <div className={classes.UserTable}>
+                        <UserTable /> 
+                    </div>
+                    
+                    <div className={classes.UserForm}>
+                        <h4>Add User</h4>
+                        <AddUser /> 
+                    </div>
+                </div>    
+            );
+        }
+
         return (
-            <div>
-                <div className={classes.UserTable}>
-                    <UserTable /> 
-                </div>
-                
-                <div className={classes.UserForm}>
-                    <h4>Add User</h4>
-                    <AddUser /> 
-                </div>
+            <div className={classes.UsersScreen}>
+                {content}
             </div>            
         );
     }

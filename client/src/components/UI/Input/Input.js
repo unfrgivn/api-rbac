@@ -17,7 +17,7 @@ const input = (props) => {
 			{...props.elementConfig}
 			type="hidden"
 			value={props.value}
-			onChange={props.changed}
+			readOnly
 			className={inputClasses.join(' ')} />;
 		break;
 
@@ -27,6 +27,7 @@ const input = (props) => {
 			value={props.value}
 			onChange={props.changed}
 			onKeyDown={props.keydown}
+			readOnly={!props.changed}
 			className={inputClasses.join(' ')} />;
 		break;
 
@@ -34,8 +35,9 @@ const input = (props) => {
 		inputElement = <textarea 
 			{...props.elementConfig} 
 			value={props.value}
-			onChange={props.changed}
+			onChange={props.changed}			
 			onKeyDown={props.keydown}
+			readOnly={!props.changed}
 			className={inputClasses.join(' ')} />;
 		break;
 
@@ -60,6 +62,7 @@ const input = (props) => {
 			{...props.elementConfig} 
 			value={props.value}
 			onChange={props.changed}
+			readOnly={!props.changed}
 			className={inputClasses.join(' ')} />;
 		break;
 
@@ -69,6 +72,7 @@ const input = (props) => {
 			value={props.value}
 			onChange={props.changed}
 			onKeyDown={props.keydown}
+			readOnly={!props.changed}
 			className={inputClasses.join(' ')} />;
 	}
 

@@ -1,0 +1,46 @@
+@import '../../../assets/styles/variables';
+
+.UserKeyTable {
+    width: 100%;
+    margin-bottom: 2rem;
+
+    thead {
+        border-bottom: solid 1px $gray-light;
+
+        th {
+            padding: .5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    }
+
+    tbody {
+        .UserKeyRow {
+            padding: .5rem;
+
+            td {
+                padding: .5rem;
+            }
+
+            .Input {
+                flex: 1;
+            }
+        
+            .Date {
+                flex: 1;
+            }
+        
+            &.Odd {
+                background-color: white;
+            }
+        
+            &.Even {
+                background-color: $off-white;
+            }
+        
+            &:hover {
+                background-color: rgba(blue, .05);
+            }
+        }
+    }
+}
