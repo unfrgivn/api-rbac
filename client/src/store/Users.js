@@ -16,7 +16,12 @@ class Store {
         App.feathers.service('users').on('created', response => {
             console.log('NEW USER CREATE EVENT', response);
 
-            const createdUser = response;
+            const createdUser = {
+                ...response,
+                groups: [], // Init with empty array of groups
+                keys: [], // Init with empty array of keys
+            };
+
             this.users.push(createdUser);
 
             UI.setMessage(`New user ${createdUser.username} created`, 'success');
