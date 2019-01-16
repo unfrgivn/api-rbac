@@ -13,7 +13,7 @@ import UI from './UI';
 import Users from './Users';
 
 // When in development use the ENV-specificed host if exists, otherwsie socket server is same host/port as client 
-const FEATHERS_HOST = process.env.FEATHERS_HOST || window.location.host;
+const FEATHERS_HOST = process.env.NODE_ENV === 'development' ? process.env.FEATHERS_HOST : window.location.host;
 class Store {
 	@observable socketListenersConnected = false;
 	@observable isConnecting = false; // for detecting connection to datasource API
