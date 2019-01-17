@@ -1,9 +1,11 @@
-import { observable, action } from 'mobx';
+import { observable, action, extendObservable } from 'mobx';
 import { persist } from 'mobx-persist';
 
 import App from './App';
 import Groups from './Groups';
 import UI from './UI';
+
+import { updateObject } from '../shared/utility';
 
 class Store {
     @observable users = [];
@@ -16,10 +18,29 @@ class Store {
         App.feathers.service('users').on('created', response => {
             console.log('NEW USER CREATE EVENT', response);
 
-            const createdUser = response;
+            const createdUser = {
+                ...response,
+                groups: [], // Init with empty array of groups
+                keys: [], // Init with empty array of keys
+            };
+
             this.users.push(createdUser);
 
             UI.setMessage(`New user ${createdUser.username} created`, 'success');
+        });
+
+        App.feathers.service('users').on('patched', response => {
+            console.log('NEW USER PATCHED EVENT', response);
+
+            const updatedUserData = response;
+
+            // Get index of edited user
+            const editedUserIndex = this.users.findIndex(user => user.id === updatedUserData.id);
+
+            // Update index with new values
+            this.users[editedUserIndex] = updateObject(this.users[editedUserIndex], updatedUserData);
+                
+            UI.setMessage(`User ${updatedUserData.username} updated`, 'success');
         });
 
         App.feathers.service('group-users').on('created', response => {
@@ -104,17 +125,42 @@ class Store {
         }
     }
 
+    @action edit = async (userId, data) => {
+        try {
+            // Parse JSON
+            const parsedData = updateObject(data, {
+                userdata: data.userdata.length ? JSON.parse(data.userdata) : null
+            });
+            
+            const response = await App.feathers.service('users').patch(userId, parsedData);
+
+            this.loading = false;
+            
+            return response;
+
+        } catch (error) {
+            this.loading = false;
+
+            UI.setMessage(error.message, 'danger');
+
+            return {error};
+        }
+    }
+
     @action setCurrentUser = userId => {
         this.currentUserId = userId;
     }
 
     @action getCurrentUser = () => {
-        const userIndex = this.users.findIndex(user => user.id === this.currentUserId);
-        return this.users[userIndex];
+        return this.users.find(user => user.id === this.currentUserId);
     }
 
     @action resetCurrentUser = () => {
         this.currentUserId = null;
+    }
+
+    @action getUser = userId => {
+        return this.users.find(user => user.id === userId)
     }
 
     @action addGroup = async (userId, groupId = null) => {

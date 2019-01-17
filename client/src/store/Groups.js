@@ -18,7 +18,11 @@ class Store {
         App.feathers.service('groups').on('created', response => {
             console.log('NEW GROUP CREATE EVENT', response);
     
-            const createdGroup = response;
+            const createdGroup = {
+                ...response,
+                actions: [], // Init with empty array of actions
+            };
+
             this.groups.push(createdGroup);
         });
 

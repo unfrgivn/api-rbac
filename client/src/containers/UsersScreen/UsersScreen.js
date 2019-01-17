@@ -20,7 +20,16 @@ class UsersScreen extends Component {
         const { currentUserId } = Users;
 
         if (currentUserId) {
-            content = <UserKeys />;
+            content = (
+                <div>
+                    <UserKeys />
+                    <hr />
+                    <div className={classes.UserForm}>
+                        <h4>Edit User</h4>
+                        <AddUser userId={currentUserId} /> 
+                    </div>
+                </div>
+            );
 
         } else {
             content = (

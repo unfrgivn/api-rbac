@@ -3,6 +3,7 @@ const commonHooks = require('feathers-hooks-common');
 const { NotAuthenticated } = require('@feathersjs/errors');
 
 const addAssociations = require('../../hooks/add-associations');
+// const writeJSONFields = require('../../hooks/write-json');
 
 const {
 	hashPassword, protect
@@ -86,10 +87,19 @@ module.exports = {
 					return Promise.reject(new NotAuthenticated(`Only authenticated users and setup can create users`));
 				}
 			},
+			// writeJSONFields(['userdata']),
 			hashPassword())
 		],
-		update: [ hashPassword(), authenticate('jwt') ],
-		patch: [ hashPassword(), authenticate('jwt') ],
+		update: [ 
+			hashPassword(), 
+			// writeJSONFields(['userdata']), 
+			authenticate('jwt') 
+		],
+		patch: [ 
+			hashPassword(), 
+			// writeJSONFields(['userdata']), 
+			authenticate('jwt') 
+		],
 		remove: [ authenticate('jwt') ]
 	},
 

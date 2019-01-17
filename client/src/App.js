@@ -28,6 +28,22 @@ class App extends Component {
 		const response = await this.props.stores.Auth.authenticate();
 	}
 
+	componentDidUpdate(prevProps) {
+		// If the location changes, run the onRouteChanged method
+		if (this.props.location !== prevProps.location) {
+		  this.onRouteChanged();
+		}
+	  }
+	
+	/**
+	 * Run when the route changes
+	 */
+	onRouteChanged() {
+		// Clear all message bars when switching routes/screens
+		const { UI } = this.props.stores;
+		UI.clearMessages();
+	}
+
 	render() {
 		const { isSetup } = this.props.stores.App;
 		const { isAuthenticated } = this.props.stores.Auth;

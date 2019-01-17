@@ -67,11 +67,49 @@ class AddUser extends Component {
 				valid: true
 			},
 		},
+		isEditing: false,
 		formIsValid: false,
         error: {
             message: null,
         }
 	};
+
+	componentDidMount() {
+		if (this.props.userId) {
+			const { Users } = this.props.stores;
+			const editingUser = Users.users.find(user => user.id === this.props.userId);
+			
+			const controls = this.state.controls;
+			const updatedControls = updateObject(controls, {
+				usertype: updateObject(controls.usertype, {
+					...controls.usertype,
+					value: editingUser.usertype,
+					elementConfig: updateObject(controls.usertype.elementConfig, {
+						...controls.usertype.elementConfig,
+						disabled: 'disabled',
+					}),
+				}),
+				username: updateObject(controls.username, {
+					...controls.username,
+					value: editingUser.username,
+					elementConfig: updateObject(controls.usertype.elementConfig, {
+						...controls.username.elementConfig,
+						disabled: 'disabled',
+					}),
+				}),
+				password: updateObject(controls.username, {
+					...controls.password,
+					valid: true,
+				}),
+				userdata: updateObject(controls.userdata, {
+					...controls.userdata,
+					value: editingUser.userdata ? JSON.stringify(editingUser.userdata) : '',
+				})
+			});
+
+			this.setState({controls: updatedControls, isEditing: true});
+		}
+	}
 
 	inputChangedHandler = (event, controlName) => {
 		//Only copies the controls state object, but all children are pointers (not copied deeply)
@@ -86,7 +124,7 @@ class AddUser extends Component {
 		// Check form validity
 		let formIsValid = true;
 		for (let inputIdentifier in updatedControls) {
-			formIsValid = formIsValid && updatedControls[inputIdentifier].valid;
+			formIsValid = formIsValid && (updatedControls[inputIdentifier].valid || updatedControls[inputIdentifier].elementConfig.disabled);
 		}
 		
 		this.setState({controls: updatedControls, formIsValid});
@@ -99,24 +137,36 @@ class AddUser extends Component {
 		const username = this.state.controls.username.value;
 		const password = this.state.controls.password.value;
 		const usertype = this.state.controls.usertype.value;
-		//TODO ensure that this is going in as valid JSON data and not an escaped string
 		const userdata = this.state.controls.userdata.value;
+
+		//TODO: Handle password updates
 		
 		const { Users } = this.props.stores;
 
-		const response = await Users.create({
-			username,
-			password,
-			usertype,
-			userdata,
-        });
+		let response = null;
+
+		if (this.state.isEditing) {
+			response = await Users.edit(this.props.userId, {
+				userdata,
+			});
+
+		} else {
+			response = await Users.create({
+				username,
+				password,
+				usertype,
+				userdata,
+			});
+		}		
 		
 		if (response.error) {
 			this.setState(updateObject(this.state.error, {message: response.error}));
         }
 
 		// Reset form
-		this.resetForm();
+		if (!this.state.isEditing) {
+			this.resetForm();
+		}
 	}
 
 	resetForm = () => {
@@ -173,7 +223,7 @@ class AddUser extends Component {
 				{errorMessage}
 				<form onSubmit={this.submitHandler}>
 					{form}
-					<Button className="btn btn-success btn-block btn-outline-success" loading={loading} disabled={!this.state.formIsValid}>Add User</Button>
+					<Button className="btn btn-success btn-block btn-outline-success" loading={loading} disabled={!this.state.formIsValid}>{this.props.userId ? 'Edit' : 'Add'} User</Button>
 				</form>
 			</div>
 		);
