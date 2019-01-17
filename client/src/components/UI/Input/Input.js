@@ -44,8 +44,17 @@ const input = (props) => {
 	case('select') :
 		inputElement = (
 			<select 
+				{
+					...Object.keys(props.elementConfig)
+						.filter(key => key !== 'options')
+						.reduce((obj, key) => {
+							obj[key] = props.elementConfig[key];
+							return obj;
+						}, {})
+				}
 				value={props.value}
 				onChange={props.changed}
+				readOnly={!props.changed}
 				className={inputClasses.join(' ')}>
 				{props.elementConfig.options.map(option => (
 					<option key={option.value} value={option.value}>
