@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {autobind} from 'core-decorators';
 import { inject, observer } from 'mobx-react';
 
@@ -6,7 +6,6 @@ import NavigationItem from './NavigationItem/NavigationItem';
 import NavigationButton from './NavigationButton/NavigationButton';
 
 import classes from './NavigationItems.scss';
-
 @inject('stores')
 @observer @autobind
 class NavigationItems extends Component { 
