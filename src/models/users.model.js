@@ -13,7 +13,7 @@ module.exports = function (app) {
 		},
 		password: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: true
 		},
 		usertype: {
 			type: DataTypes.STRING,
@@ -48,9 +48,9 @@ module.exports = function (app) {
 			foreignKey: 'user_id'
 		});
 
-		users.belongsToMany(models.keys, {
-			through: models.user_keys,
-			as: 'keys',
+		users.belongsToMany(models.access_keys, {
+			through: models.user_access_keys,
+			as: 'accessKeys',
 			foreignKey: 'user_id'
 		});
 	};
