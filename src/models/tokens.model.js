@@ -7,7 +7,15 @@ module.exports = function (app) {
 	const sequelizeClient = app.get('sequelizeClient');
 	const tokens = sequelizeClient.define('tokens', {
 		refresh_token: {
-			type: DataTypes.STRING,
+			type: DataTypes.STRING(500),
+			allowNull: false
+		},
+		user_id: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		},
+		application_id: {
+			type: DataTypes.INTEGER,
 			allowNull: false
 		}
 	}, {
@@ -18,7 +26,13 @@ module.exports = function (app) {
 			beforeCount(options) {
 				options.raw = true;
 			}
-		}
+		},
+		indexes: [
+			{
+				unique: true,
+				fields: ['user_id', 'application_id']
+			}
+		]
 	});
 
 	// eslint-disable-next-line no-unused-vars
