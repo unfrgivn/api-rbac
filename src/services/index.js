@@ -3,6 +3,7 @@ const groups = require('./groups/groups.service.js');
 const groupActions = require('./group-actions/group-actions.service.js');
 const actions = require('./actions/actions.service.js');
 const groupUsers = require('./group-users/group-users.service.js');
+const requestLogs = require('./request-logs/request-logs.service.js');
 const tokens = require('./tokens/tokens.service.js');
 const applications = require('./applications/applications.service.js');
 const sync = require('./sync/sync.service.js');
@@ -15,6 +16,7 @@ module.exports = function (app) {
 	app.configure(groupActions);
 	app.configure(actions);
 	app.configure(groupUsers);
+	app.configure(requestLogs);
 	app.configure(tokens);
 	app.configure(applications);
 	app.configure(sync);	

@@ -21,7 +21,7 @@ class Store {
             const createdUser = {
                 ...response,
                 groups: [], // Init with empty array of groups
-                keys: [], // Init with empty array of keys
+                accessKeys: [], // Init with empty array of keys
             };
 
             this.users.push(createdUser);

@@ -25,8 +25,8 @@ module.exports = function (options = {}) {
 		
 		// Generate unique API key
 		const key = await generateToken({byteLength: 20});
-		// console.log("key:", key);
-		context.data.key = key;
+		// console.log("access_key:", key);
+		context.data.access_key = key;
 
 		// Generate unique API secret
 		const secret = await generateToken();

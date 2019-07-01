@@ -8,30 +8,30 @@ class Store {
     @observable loading = false;
 
     connect() {        
-        App.feathers.service('keys').on('created', response => {
+        App.feathers.service('access-keys').on('created', response => {
             console.log('NEW KEY CREATE EVENT', response);
     
             const createdKey = response;
             const currentUser = Users.getCurrentUser();
 
             // Add key to current user
-            currentUser.keys.push(createdKey);
+            currentUser.accessKeys.push(createdKey);
         });
 
-        App.feathers.service('keys').on('removed', response => {
+        App.feathers.service('access-keys').on('removed', response => {
             console.log('NEW KEY DELETE EVENT', response);
     
             const deletedKey = response;
             const currentUser = Users.getCurrentUser();
 
             // Remove key from current user
-            currentUser.keys = currentUser.keys.filter(key => key.id !== deletedKey.id);
+            currentUser.accessKeys = currentUser.accessKeys.filter(key => key.id !== deletedKey.id);
         });
     }
 
     @action create = async data => {
         try {
-            const response = await App.feathers.service('keys').create(data);
+            const response = await App.feathers.service('access-keys').create(data);
             UI.setMessage('New key created', 'success');
             this.loading = false;
             
@@ -45,7 +45,7 @@ class Store {
 
     @action delete = async keyId => {
         try {
-            const response = await App.feathers.service('keys').remove(keyId);
+            const response = await App.feathers.service('access-keys').remove(keyId);
             UI.setMessage('Key deleted', 'success');
             this.loading = false;
             

@@ -14,8 +14,8 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
 		}
 
 		// Create user-key record
-		const userKey = await app.service('user-keys').create({
-			key_id: keyId,
+		const userKey = await app.service('user-access-keys').create({
+			access_key_id: keyId,
 			user_id: userId,
 		});
 

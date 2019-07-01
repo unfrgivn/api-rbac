@@ -35,7 +35,7 @@ class UserKeys extends Component {
         if (currentUserId) {
             const currentUser = Users.getCurrentUser();
             
-            if (currentUser.keys.length) {
+            if (currentUser.accessKeys && currentUser.accessKeys.length) {
                 const keysHeader = (
                     <thead className={classes.UserKeyHeader}>
                         <tr>
@@ -47,12 +47,12 @@ class UserKeys extends Component {
                     </thead>
                 );
 
-                const keysRows = currentUser.keys.map((key, index) => {
+                const keysRows = currentUser.accessKeys.map((key, index) => {
                         const rowStyle = index % 2 ? classes.Even : classes.Odd;
 
                         return (
                             <tr key={key.id} className={[classes.UserKeyRow, rowStyle].join(' ')}>
-                                <td><Input wrapperClasses={classes.Input} value={key.key} /></td>
+                                <td><Input wrapperClasses={classes.Input} value={key.access_key} /></td>
                                 <td><Input wrapperClasses={classes.Input} value={key.secret} /></td>
                                 <td><div className={classes.Date}>{key.created_at}</div></td>
                                 <td><TextButton clicked={() => this.revokeKey(key.id)}>Revoke</TextButton></td>
