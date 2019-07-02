@@ -223,7 +223,7 @@ class AddUser extends Component {
 				{errorMessage}
 				<form onSubmit={this.submitHandler}>
 					{form}
-					<Button className="btn btn-success btn-block btn-outline-success" loading={loading} disabled={!this.state.formIsValid}>{this.props.userId ? 'Edit' : 'Add'} User</Button>
+					<Button className="btn btn-block btn-outline-success" loading={loading} disabled={!this.state.formIsValid}>{this.props.userId ? 'Edit' : 'Add'} User</Button>
 				</form>
 			</div>
 		);
