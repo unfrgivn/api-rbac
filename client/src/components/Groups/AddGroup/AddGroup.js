@@ -113,7 +113,7 @@ class AddGroup extends Component {
 				{errorMessage}
 				<form onSubmit={this.submitHandler}>
 					{form}
-					<Button className="btn btn-success btn-outline-success" loading={loading}>Add Group</Button>
+					<Button className="btn btn-outline-success" loading={loading}>Add Group</Button>
 				</form>
 			</div>
 		);

@@ -136,7 +136,7 @@ class Auth extends Component {
 				{authRedirect}
 				<form onSubmit={this.submitHandler}>
 					{form}
-					<Button className="btn btn-success btn-outline-success btn-block" loading={doingAuth}>Login</Button>
+					<Button className="btn btn-outline-success btn-block" loading={doingAuth}>Login</Button>
 				</form>
 			</div>
 		);

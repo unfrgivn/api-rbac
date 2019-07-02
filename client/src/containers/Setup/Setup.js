@@ -122,7 +122,7 @@ class Setup extends Component {
                 <p>Start by creating the admin user</p>
 				<form onSubmit={this.submitHandler}>
 					{form}
-					<Button className="btn btn-success btn-outline-success btn-block" loading={doingSetup}>Get Started</Button>
+					<Button className="btn btn-outline-success btn-block" loading={doingSetup}>Get Started</Button>
 				</form>
 			</div>
 		);
