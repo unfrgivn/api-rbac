@@ -38,6 +38,15 @@ module.exports = function (app) {
 		response: {
 			type: DataTypes.STRING(10000),
 		},
+		headers: {
+			type: DataTypes.STRING(10000),
+		},
+		ip_address: {
+			type: DataTypes.STRING(45),
+		},
+		duration: {
+			type: DataTypes.FLOAT,
+		},
 	}, {
 		// don't use camelcase for automatically added attributes but underscore style
 		// so updatedAt will be updated_at
@@ -49,6 +58,9 @@ module.exports = function (app) {
 			}
 		},
 		indexes: [
+			{
+				fields: ['request_id'],
+			},
 			{
 				fields: ['status'],
 			},
@@ -74,6 +86,9 @@ module.exports = function (app) {
 				fields: ['created_at'],
 			},
 			{
+				fields: ['ip_address'],
+			},
+			{
 				fields: [{
 					attribute: 'params',
 					length: 1000, // Limit index prefix to first X chars
@@ -82,6 +97,12 @@ module.exports = function (app) {
 			{
 				fields: [{
 					attribute: 'response',
+					length: 1000, // Limit index prefix to first X chars
+				}],
+			},
+			{
+				fields: [{
+					attribute: 'headers',
 					length: 1000, // Limit index prefix to first X chars
 				}],
 			},
