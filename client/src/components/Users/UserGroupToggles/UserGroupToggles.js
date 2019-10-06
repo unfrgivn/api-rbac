@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import Input from '../../UI/Input/Input';
 import Spinner from '../../UI/Spinner/Spinner';
 
-import classes from './UserGroupToggles.scss';
+import classes from './UserGroupToggles.module.scss';
 
 @inject('stores')
 @observer @autobind

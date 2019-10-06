@@ -1,6 +1,6 @@
 import React from 'react';
 
-import classes from './Button.scss';
+import classes from './Button.module.scss';
 
 const button = (props) => {
 	// Show loading indicator if loading is set

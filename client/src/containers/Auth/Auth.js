@@ -9,7 +9,7 @@ import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
-import classes from './Auth.scss';
+import classes from './Auth.module.scss';
 
 @inject('stores')
 @observer @autobind

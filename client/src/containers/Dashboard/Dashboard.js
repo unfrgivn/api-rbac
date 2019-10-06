@@ -3,7 +3,7 @@ import {autobind} from 'core-decorators';
 import { inject, observer } from 'mobx-react';
 // import {Redirect} from 'react-router-dom';
 
-import classes from './Dashboard.scss';
+import classes from './Dashboard.module.scss';
 
 @inject('stores')
 @observer @autobind
