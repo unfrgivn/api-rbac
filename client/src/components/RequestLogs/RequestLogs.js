@@ -4,7 +4,6 @@ import { inject, observer } from 'mobx-react';
 import RequestLogItem from './RequestLogItem/RequestLogItem';
 
 import classes from './RequestLogs.module.scss';
-import { clear } from 'winston';
 
 const logs = inject('stores')(observer((props) => {
 
