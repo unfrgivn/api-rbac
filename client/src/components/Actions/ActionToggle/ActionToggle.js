@@ -4,7 +4,7 @@ import Toggle from 'react-toggle';
 
 
 import './ActionToggle.css'; // Include raw toggle CSS
-import classes from './ActionToggle.scss';
+import classes from './ActionToggle.module.scss';
 
 const actionToggle = (props) => {
 	// let inputElement = null;

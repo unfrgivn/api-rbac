@@ -8,7 +8,7 @@ import Button from '../..//UI/Button/Button';
 import Input from '../../UI/Input/Input';
 import Spinner from '../../UI/Spinner/Spinner';
 
-import classes from './AddGroup.scss';
+import classes from './AddGroup.module.scss';
 
 @inject('stores')
 @observer @autobind

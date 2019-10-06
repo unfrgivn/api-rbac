@@ -1,6 +1,6 @@
 import React from 'react';
 
-import classes from './TextButton.scss';
+import classes from './TextButton.module.scss';
 
 const textButton = (props) => (
 	<button 

@@ -6,7 +6,7 @@ import UserTable from '../../components/Users/UserTable';
 import AddUser from '../../components/Users/AddUser/AddUser';
 import UserKeys from '../../components/Users/UserKeys/UserKeys';
 
-import classes from './UsersScreen.scss';
+import classes from './UsersScreen.module.scss';
 
 @inject('stores')
 @observer @autobind

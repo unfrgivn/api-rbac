@@ -7,7 +7,7 @@ import Button from '../../UI/Button/Button';
 import Input from '../../UI/Input/Input';
 import TextButton from '../../UI/TextButton/TextButton';
 
-import classes from './UserKeys.scss';
+import classes from './UserKeys.module.scss';
 
 @inject('stores')
 @observer @autobind

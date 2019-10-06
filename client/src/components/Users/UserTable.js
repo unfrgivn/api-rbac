@@ -10,7 +10,7 @@ import UserGroupToggles from './UserGroupToggles/UserGroupToggles';
 import Input from '../UI/Input/Input';
 import Spinner from '../UI/Spinner/Spinner';
 
-import classes from './UserTable.scss';
+import classes from './UserTable.module.scss';
 
 @inject('stores')
 @observer @autobind

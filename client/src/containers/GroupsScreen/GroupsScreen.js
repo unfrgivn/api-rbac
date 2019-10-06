@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 
 import Groups from '../../components/Groups/Groups'; 
 
-import classes from './GroupsScreen.scss';
+import classes from './GroupsScreen.module.scss';
 
 @inject('stores')
 @observer @autobind

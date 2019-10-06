@@ -2,7 +2,7 @@ import React from 'react';
 
 // import logoSvg from '../../assets/images/logo.svg';
 
-import classes from './Logo.scss';
+import classes from './Logo.module.scss';
 
 const logo = (props) => (
 	<div className={classes.Logo}>
