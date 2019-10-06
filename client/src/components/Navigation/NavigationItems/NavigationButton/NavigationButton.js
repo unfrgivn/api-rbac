@@ -2,7 +2,7 @@ import React from 'react';
 
 import Button from '../../../UI/Button/Button';
 
-import classes from './NavigationButton.scss';
+import classes from './NavigationButton.module.scss';
 
 const navigationButton = (props) => (
 	<li className={classes.NavigationButton}>

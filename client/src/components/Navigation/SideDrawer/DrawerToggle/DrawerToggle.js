@@ -1,6 +1,6 @@
 import React from 'react';
 
-import classes from './DrawerToggle.scss';
+import classes from './DrawerToggle.module.scss';
 
 const drawerToggle = (props) => {
 	return (

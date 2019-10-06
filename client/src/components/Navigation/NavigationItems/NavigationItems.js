@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import NavigationItem from './NavigationItem/NavigationItem';
 import NavigationButton from './NavigationButton/NavigationButton';
 
-import classes from './NavigationItems.scss';
+import classes from './NavigationItems.module.scss';
 @inject('stores')
 @observer @autobind
 class NavigationItems extends Component { 
@@ -26,6 +26,7 @@ class NavigationItems extends Component {
 				<NavigationItem link="/" exact>Dashboard</NavigationItem>
 				{this.props.isAuthenticated ? <NavigationItem link="/groups">Groups</NavigationItem> : null }
 				{this.props.isAuthenticated ? <NavigationItem link="/users" clicked={() => this.resetCurrentUser()}>Users</NavigationItem> : null }
+				{this.props.isAuthenticated ? <NavigationItem link="/logs">Logs</NavigationItem> : null }
 				<NavigationButton clicked={() => this.sync()}>Sync</NavigationButton>
 				{!this.props.isAuthenticated 
 					? <NavigationItem link="/auth">Login</NavigationItem>
