@@ -1,0 +1,61 @@
+// stylelint-disable declaration-no-important, selector-list-comma-newline-after
+
+@import "./_variables.scss";
+
+//
+// Headings
+//
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  margin-bottom: $headings-margin-bottom;
+  font-family: $headings-font-family;
+  font-weight: $headings-font-weight;
+  line-height: $headings-line-height;
+  color: $headings-color;
+}
+
+h1, .h1 { font-size: $font-size-h1; }
+h2, .h2 { font-size: $font-size-h2; }
+h3, .h3 { font-size: $font-size-h3; }
+h4, .h4 { font-size: $font-size-h4; }
+h5, .h5 { font-size: $font-size-h5; }
+h6, .h6 { font-size: $font-size-h6; }
+
+.lead {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-lead;
+}
+
+.strong {
+    font-weight: $font-weight-bold;
+}
+
+.muted  {
+  color: $gray;
+  font-style: italic;
+}
+
+.text-primary {
+  color: $primary !important;
+}
+
+.text-secondary {
+  color: $secondary !important;
+}
+
+.text-error {
+  color: $error !important;
+}
+
+.text-info {
+  color: $info !important;
+}
+
+.text-success {
+  color: $success !important;
+}
+
+.text-warning {
+  color: $warning !important;
+}

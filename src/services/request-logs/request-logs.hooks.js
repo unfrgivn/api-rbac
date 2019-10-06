@@ -5,20 +5,20 @@ module.exports = {
 	before: {
 		all: [ authenticate('jwt') ],
 		find: [
-			// addAssociations({
-			// 	models: [{
-			// 		model: 'users',
-			// 		as: 'user'
-			// 	}]
-			// })
+			addAssociations({
+				models: [{
+					model: 'users',
+					as: 'user'
+				}]
+			})
 		],
 		get: [
-			// addAssociations({
-			// 	models: [{
-			// 		model: 'users',
-			// 		as: 'user'
-			// 	}]
-			// })
+			addAssociations({
+				models: [{
+					model: 'users',
+					as: 'user'
+				}]
+			})
 		],
 		create: [],
 		update: [],

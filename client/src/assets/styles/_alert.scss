@@ -1,0 +1,15 @@
+.alert {
+	color: #333;
+	background-color: #e2e2e2;
+	padding: .6rem 1rem;
+
+	&.alert-success { 
+		color: #fff;
+		background-color: green;
+	}
+
+	&.alert-danger {
+		color: #fff;
+		background-color: #cc0000;
+	}
+}

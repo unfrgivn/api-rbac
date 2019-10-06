@@ -3,7 +3,7 @@ import React from 'react';
 import Logo from '../../Logo/Logo';
 import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle';
 
-import classes from './Toolbar.scss';
+import classes from './Toolbar.module.scss';
 
 const toolbar = (props) => (
 	<nav className={[classes.Toolbar, "navbar navbar-expand-lg navbar-light"].join(' ')}>

@@ -20,6 +20,9 @@ module.exports = function (app) {
 		user_id: {
 			type: DataTypes.INTEGER,
 		},
+		request_method: {
+			type: DataTypes.STRING(10),
+		},
 		endpoint: {
 			type: DataTypes.STRING(500),
 		},	
@@ -31,6 +34,9 @@ module.exports = function (app) {
 		},		
 		params: {
 			type: DataTypes.STRING(5000),
+		},
+		request_body: {
+			type: DataTypes.STRING(10000),
 		},
 		message: {
 			type: DataTypes.STRING(500),
@@ -71,6 +77,9 @@ module.exports = function (app) {
 				fields: ['user_id'],
 			},
 			{
+				fields: ['request_method'],
+			},
+			{
 				fields: ['endpoint'],
 			},
 			{
@@ -96,7 +105,7 @@ module.exports = function (app) {
 			},
 			{
 				fields: [{
-					attribute: 'response',
+					attribute: 'request_body',
 					length: 1000, // Limit index prefix to first X chars
 				}],
 			},
@@ -115,9 +124,9 @@ module.exports = function (app) {
 		// See http://docs.sequelizejs.com/en/latest/docs/associations/
 
 		// Add user_id column to request logs model
-		// requestLogs.belongsTo(models.users, {
-		// 	foreignKey: 'user_id'
-		// });
+		requestLogs.belongsTo(models.users, {
+			foreignKey: 'user_id'
+		});
 	};
 
 	return requestLogs;
