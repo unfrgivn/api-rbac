@@ -9,6 +9,7 @@ import localForage from 'localforage';
 import Actions from './Actions';
 import Groups from './Groups';
 import Keys from './Keys';
+import RequestLogs from './RequestLogs';
 import UI from './UI';
 import Users from './Users';
 
@@ -69,6 +70,7 @@ class Store {
 			Actions.connect();
 			Groups.connect();
 			Keys.connect();
+			RequestLogs.connect();
 			Users.connect();
 
 			this.socketListenersConnected = true;
