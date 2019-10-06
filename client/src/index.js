@@ -10,7 +10,10 @@ import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import './assets/styles/_variables.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bulma/css/bulma.min.css';
+import './assets/styles/index.scss';
 
 const hydrate = create({
     storage: localForage,   // or AsyncStorage in react-native.

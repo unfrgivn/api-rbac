@@ -10,6 +10,7 @@ import SetupScreen from './containers/Setup/Setup';
 import Dashboard from './containers/Dashboard/Dashboard';
 import UsersScreen from './containers/UsersScreen/UsersScreen';
 import GroupsScreen from './containers/GroupsScreen/GroupsScreen';
+import LogsScreen from './containers/LogsScreen/LogsScreen';
 import Logout from './containers/Auth/Logout/Logout';
 
 /**
@@ -64,6 +65,7 @@ class App extends Component {
 					<Route path="/" exact component={Dashboard} />
 					<Route path="/groups" exact component={GroupsScreen} />
 					<Route path="/users" exact component={UsersScreen} />
+					<Route path="/logs" exact component={LogsScreen} />
 					<Redirect to="/" />{/*Redirect unknown routes to home*/}
 					{/* <Route render={() => <h1>Not Found</h1>} />				 */} */}
 				</Switch>

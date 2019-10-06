@@ -1,0 +1,42 @@
+.btn {
+    background-color: $gray-light;  
+    color: $gray-dark; 
+
+    &.btn-primary {
+        background-color: $primary;  
+        color: $white; 
+    }
+
+    &.btn-secondary {
+        background-color: $secondary;  
+        color: $white; 
+    }
+
+    &.btn-error {
+        background-color: $error;  
+        color: $white; 
+    }
+
+    &.btn-info {
+        background-color: $info;  
+        color: $white; 
+    }
+
+    &.btn-success {
+        background-color: $success;  
+        color: $white; 
+    }
+    
+    &.btn-warning {
+        background-color: $warning;  
+        color: $white; 
+    }
+
+    .leftIcon {
+        margin-right: .5rem;
+    }
+
+    .rightIcon {
+        margin-left: .5rem;
+    }
+}
