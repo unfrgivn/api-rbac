@@ -15,14 +15,20 @@ const logs = inject('stores')(observer((props) => {
     useEffect(() => {
         // console.log('mounted');
 
+        // Reset query to beginning when re-mounting component
+        RequestLogsStore.skip = 0;
+        RequestLogsStore.startDate = new Date();
+        
         // TODO: Add state property and "pause" button
 
         const interval = setInterval(async () => {
             await RequestLogsStore.load(true);
-        }, 1500);
+        }, 2000);
         
         return () => {
             // console.log('will unmount');
+            // Remove all logs on unmount and reset startData
+            RequestLogsStore.clear();
             clearInterval(interval);   
         };
     }, [RequestLogsStore]);   

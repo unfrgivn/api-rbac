@@ -162,6 +162,13 @@ class Store {
             UI.setMessage(err.message);
         }
     }
+
+    @action clear = () => {
+        this.requestLog = new Models.RequestLog();
+        this.requestLogs = [];
+        this.isLoaded = false;
+        this.error = null;
+    }
 }
 
 export default new Store();
