@@ -1,0 +1,206 @@
+@import '../../../assets/styles/variables';
+
+.RequestLog {
+    display: block;
+    margin-bottom: 1rem;        
+    padding-bottom: 1rem;
+
+    .primaryContainer {
+        display: flex;        
+        flex-direction: row;
+        justify-content: flex-start;
+        border: solid 1px #e2e2e2;
+        border-left: 0;
+        border-right: 0;
+
+        .statusContainer,
+        .expandIconContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;            
+            padding: .3rem 1rem;
+        }
+
+        .statusContainer {        
+            min-width: 6rem;
+            border-right: solid 1px $gray-light;
+
+            .statusIcon {
+                margin-bottom: .25rem;
+            }
+
+            .statusLabel {
+                font-size: .65rem;
+                font-weight: $font-weight-bold;
+                text-transform: uppercase;
+                margin-bottom: .25rem;
+            }
+
+            .statusCode {
+                font-size: .5rem;
+                font-weight: $font-weight-bold;
+            }
+        }
+
+        .expandIconContainer {
+            min-width: 2rem;
+            border-left: solid 1px $gray-light;
+        }
+
+        .mainRequestContainer {
+            display: flex;
+            flex: 1;
+            justify-content: space-between;
+            padding: .5rem 1rem;
+
+            .left {
+                .endpoint {
+                    display: flex;
+                    flex: 1;
+                    font-size: 1.2rem;
+                    color: $gray-dark;
+
+                    .requestMethod {
+                        display: inline;
+                        background-color: $gray;
+                        color: $gray-dark;
+                        font-size: .7rem;
+                        line-height: 1;
+                        font-family: $font-family-code;
+                        font-weight: $font-weight-bold;
+                        text-transform: uppercase;
+                        align-self: center;
+                        padding: .25rem .4rem;                       
+                        margin: 0 .5rem 0 0;
+                        border-radius: .2rem;
+
+                        &.get {
+                            background-color: rgba($success, .15);
+                        }
+
+                        &.post {
+                            background-color: rgba($info, .15);
+                        }
+
+                        &.put,
+                        &.patch {
+                            background-color: rgba($warning, .15);
+                        }
+
+                        &.delete {
+                            background-color: rgba($error, .15);
+                        }
+                    }
+                }
+
+                .classMethod {
+                    font-size: .9rem;
+                    color: $gray;
+                }
+
+                .subRequestBadge {
+                    display: inline;
+                    background-color: $gray-lighter;
+                    color: $gray;
+                    font-size: .75rem;
+                    line-height: 1;
+                    font-family: $font-family-code;
+                    font-weight: $font-weight-normal;
+                    align-self: center;
+                    padding: .15rem .4rem;                       
+                    margin: 0 0 0 .5rem;
+                    border-radius: .25rem;
+                }
+
+                .responseMessage {
+                    font-size: .9rem;
+                    color: $gray-dark;
+                }
+            }
+
+            .right {
+                min-width: 12rem;
+                text-align: right;
+
+                .userContainer {
+                    display: inline;
+                    background-color: $gray-lighter;
+                    color: $gray-dark;
+                    font-size: .75rem;
+                    font-weight: $font-weight-normal;
+                    padding: .25rem .6rem;                       
+                    margin: 0 0 0 .5rem;
+                    border-radius: .25rem;
+                    white-space: nowrap;
+                }
+
+                .createdAt {
+                    font-size: 1rem;
+                    color: $black;
+                }
+
+                .duration {
+                    align-self: flex-end;
+                    font-size: .8rem;
+                    color: $gray-dark;
+
+                    label {
+                        color: $gray;
+                        font-size: .5rem;
+                        text-transform: uppercase;
+                        margin-left: .4rem;
+                    }
+                }
+            }
+        }
+    }
+    
+    .expandedContainer {
+        display: block;
+        width: 100%;
+
+        .subRequests {           
+            .subRequest {
+                display: block;  
+                border-bottom: solid 1px #e2e2e2;
+
+                .subContainer {
+                    display: flex;        
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    padding: 1rem 0;
+
+                    .subRequestStatusCode,
+                    .subRequestExpandIconContainer {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        min-width: 2rem;
+                        padding: .1rem 1rem;
+                    }
+
+                    .subRequestStatusCode {
+                        font-weight: $font-weight-bold;
+                        padding-right: 1rem;
+                        border-right: solid 1px $gray-light;
+                        margin-left: 4rem;
+                    }
+
+                    .subRequestName {
+                        flex: 1;
+                        font-size: 1rem;
+                        color: $gray-dark;
+                        padding: 0 1rem;
+                    }
+
+                    .subRequestCreatedAt {
+                        font-size: .8rem;
+                        color: $gray;
+                    }
+                }
+            }
+        }
+    }    
+}

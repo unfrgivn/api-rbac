@@ -1,0 +1,31 @@
+@import '../../../assets/styles/variables';
+
+.requestDetails {
+    display: flex;
+    background: #333333;
+    font-size: .8rem;
+    font-family: $font-family-code;
+    // max-height: 500px;
+    // overflow-y: auto;
+
+    .request,
+    .response {
+        flex: 1;
+        width: 50%;
+        padding: 1rem;
+        color: $off-white;
+
+        label {
+            background: #555;
+            color: $white;
+            font-size: .8rem;
+            font-weight: $font-weight-bold;
+            text-transform: uppercase;
+            padding: .3rem .8rem;
+        }
+
+        pre {
+            color: $off-white;
+        }
+    }
+}
