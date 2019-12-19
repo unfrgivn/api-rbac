@@ -17,6 +17,10 @@ module.exports = function (app) {
 		application_id: {
 			type: DataTypes.INTEGER,
 			allowNull: false
+		},
+		expires_at: {
+			type: DataTypes.DATE,
+			allowNull: false,
 		}
 	}, {
 		// don't use camelcase for automatically added attributes but underscore style

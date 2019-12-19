@@ -18,6 +18,10 @@ module.exports = function (app) {
 			type: DataTypes.JSON
 		},
 	}, {
+		// don't delete database entries but set the newly added attribute deletedAt
+		// to the current date (when deletion was done). paranoid will only work if
+		// timestamps are enabled
+		paranoid: true,
 		// don't use camelcase for automatically added attributes but underscore style
 		// so updatedAt will be updated_at
 		underscored: true,
@@ -33,6 +37,8 @@ module.exports = function (app) {
 		// Define associations here
 		// See http://docs.sequelizejs.com/en/latest/docs/associations/
 	};
+
+	
 
 	return applications;
 };

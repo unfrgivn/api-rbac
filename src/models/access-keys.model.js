@@ -6,6 +6,10 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
 	const sequelizeClient = app.get('sequelizeClient');
 	const accessKeys = sequelizeClient.define('access_keys', {
+		application_id: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		},
 		access_key: {
 			type: DataTypes.STRING(500),
 			allowNull: false

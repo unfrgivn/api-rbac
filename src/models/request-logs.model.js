@@ -20,6 +20,9 @@ module.exports = function (app) {
 		user_id: {
 			type: DataTypes.INTEGER,
 		},
+		application_id: {
+			type: DataTypes.INTEGER,
+		},
 		request_method: {
 			type: DataTypes.STRING(10),
 		},
