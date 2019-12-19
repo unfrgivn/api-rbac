@@ -10,7 +10,7 @@ import UI from './UI';
 class Store {
     @observable user = new Models.User();
     @persist @observable isAuthenticated = false;
-	@persist @observable token = null;
+    @persist @observable token = null;
     @observable doingAuth = false;
 
     @action authenticate = async () => {
@@ -63,6 +63,8 @@ class Store {
             
             const response = await App.feathers.authenticate(payload);
 
+            console.log('AUTH RESPONSE:', response);
+            
             if (response) {
                 this.isAuthenticated = true;
                 this.token = response.accessToken;
@@ -99,6 +101,20 @@ class Store {
             return {error};
         }
     }
+
+    @action logout = async () => {
+        return this.clearStorage();        
+    }
+    
+    @action clearStorage = async () => {
+        this.isAuthenticated = false;
+		this.token = null;
+        this.user = new Models.User();
+        
+        localForage.clear();
+
+		return true;
+	};
 }
 
 export default new Store();
