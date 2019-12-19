@@ -12,7 +12,7 @@ const requestLogDetails = (props) => {
         <div className={classes.requestDetails} onClick={(e) => e.stopPropagation()}>
             <div className={classes.request}>
                 <label>Request</label>
-                <PrettyPrintJson>{requestLog.requestBody}</PrettyPrintJson>
+                <PrettyPrintJson>{requestLog.requestBody || requestLog.params}</PrettyPrintJson>
             </div>
             
             <div className={classes.response}>
