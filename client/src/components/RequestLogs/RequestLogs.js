@@ -98,7 +98,7 @@ const logs = inject('stores')(observer((props) => {
                 
             <div className={classes.filterContainer}>
                 <div className={classes.filterInputsContainer}>
-                    <Input 
+                <Input 
                         elementType="select" 
                         label="Status"
                         elementConfig={{
@@ -137,6 +137,41 @@ const logs = inject('stores')(observer((props) => {
                         wrapperClasses="form-group"
 				        classes="form-control" />
 
+                    <Input 
+                        elementType="select" 
+                        label="Request Type"
+                        elementConfig={{
+                            options: [
+                                {
+                                    value: null,
+                                    displayValue: 'All',
+                                },
+                                {
+                                    value: 'GET',
+                                    displayValue: 'GET',
+                                },
+                                {
+                                    value: 'POST',
+                                    displayValue: 'POST',
+                                },
+                                {
+                                    value: 'PUT',
+                                    displayValue: 'PUT',
+                                },
+                                {
+                                    value: 'PATCH',
+                                    displayValue: 'PATCH',
+                                },
+                                {
+                                    value: 'DELETE',
+                                    displayValue: 'DELETE',
+                                },
+                            ]
+                        }}
+                        changed={e => filterHandler(e, "requestMethod")}
+                        wrapperClasses="form-group"
+				        classes="form-control" />
+                    
                     <Input 
                         elementType="input" 
                         label="Search Request"

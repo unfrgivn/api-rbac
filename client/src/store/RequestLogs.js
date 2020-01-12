@@ -40,6 +40,7 @@ class Store {
             const $limit = this.limit;
 
             const {
+                requestMethod,
                 responseStatus,
                 rewindMinutes,
                 searchQuery,
@@ -66,6 +67,9 @@ class Store {
                             { endpoint: { '$like': `%${searchQuery}%` }, },
                             { request_body: { '$like': `%${searchQuery}%` },}
                         ],
+                    }),
+                    ...(requestMethod && {
+                        request_method: requestMethod,
                     }),
                     $limit: $limit,
                     $skip: $skip,
