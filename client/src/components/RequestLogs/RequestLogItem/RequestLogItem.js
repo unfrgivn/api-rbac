@@ -4,10 +4,12 @@ import { inject, observer } from 'mobx-react';
 import { 
     FaAngleDown,
     FaAngleUp,
+    FaLock,
     FaRegTimesCircle,
     FaRegCheckCircle,
     FaRegUser,
-    FaUserSlash
+    FaUserSlash,
+    FaUnlink
 } from "react-icons/fa";
 
 import RequestLogDetails from '../RequestLogDetails/RequestLogDetails';
@@ -52,6 +54,16 @@ const requestLogItem = inject('stores')(observer((props) => {
         case 401:
             icon = <FaUserSlash className="error" size={iconSize} />;
             statusLabel = "Access Denied";
+            break;
+
+        case 403:
+            icon = <FaLock className="error" size={iconSize} />;
+            statusLabel = "Forbidden";
+            break;
+
+        case 404:
+            icon = <FaUnlink className="error" size={iconSize} />;
+            statusLabel = "Not Found";
             break;
 
         case 500:
@@ -133,7 +145,7 @@ const requestLogItem = inject('stores')(observer((props) => {
                         <div className={classes.left}>
                             <div className={classes.endpoint}>
                                 <label className={[classes.requestMethod, classes[requestLog.requestMethod.toLowerCase()]].join(' ')}>{requestLog.requestMethod}</label>
-                                {`/${requestLog.endpoint}/`}{queryString ? `?${queryString}` : null}
+                                <span className={classes.endpointUrl}>{`/${requestLog.endpoint}/`}{queryString ? `?${queryString}` : null}</span>
                             </div>
                         
                             <div className={classes.classMethod}>{requestLog.controller}::{requestLog.method} {subRequestBadge}</div>

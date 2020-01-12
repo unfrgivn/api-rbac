@@ -1,5 +1,6 @@
 import { observable, action, toJS } from 'mobx';
 import { persist } from 'mobx-persist';
+import dayjs from 'dayjs';
 
 import App from './App';
 import UI from './UI';
@@ -17,7 +18,7 @@ class Store {
     startDate = new Date(); // Date when application is loaded
 
     skip = 0;
-    limit = 10;
+    limit = 100;
 
     connect() {        
         App.feathers.service('request-logs').on('created', response => {
@@ -29,24 +30,40 @@ class Store {
         });
     }
 
-    @action load = async (loadNextPage = false) => {
+    @action load = async (loadNextPage = false, logQuery = {}) => {
 
         this.loading = true;
 
         try {
-
             // Set paging params
 			const $skip = loadNextPage ? this.skip : 0;
             const $limit = this.limit;
+
+            const {
+                responseStatus,
+                rewindMinutes
+            } = logQuery || {};
+
+            let startDate = this.startDate;
+
+            if (rewindMinutes) {
+                startDate = dayjs(this.startDate).subtract(rewindMinutes, 'minute').toDate();
+            }
+
+            if (responseStatus) {
+                
+            }
             
             // TODO: Get all logs since last log Id in stack
 
             const response = await App.feathers.service('request-logs').find({
                 query: {
                     created_at: {
-                        $gt: this.startDate,
-                        // $gt: this.startDate.setMinutes(this.startDate.getMinutes() - 20), // FOR TESTING
+                        $gt: startDate,
                     },
+                    ...(responseStatus && {
+                        status: responseStatus,
+                    }),
                     $limit: $limit,
                     $skip: $skip,
                     $sort: {
@@ -71,8 +88,6 @@ class Store {
 
 				for (let itemLog of responseData) {
                     const newLog = new Models.RequestLog(itemLog);
-
-                    // console.log(JSON.parse(itemLog.response));
 
                     if (newLog) {
                         fetchedLogs.unshift(newLog);

@@ -2,6 +2,7 @@ import { observable } from 'mobx';
 import { persist } from 'mobx-persist';
 
 import dayjs from 'dayjs';
+import JSONbig from 'json-bigint';
 
 import Models from '.';
 
@@ -64,11 +65,11 @@ class RequestLog {
         this.endpoint = endpoint;
         this.controller = controller;
         this.method = method;
-        this.params = params && JSON.parse(params);
-        this.requestBody = requestBody && JSON.parse(requestBody);
+        this.params = params && JSONbig.parse(params);
+        this.requestBody = requestBody && JSONbig.parse(requestBody);
         this.message = message;
-        this.response = response && JSON.parse(response);
-        this.headers = headers && JSON.parse(headers);
+        this.response = response && JSONbig.parse(response);
+        this.headers = headers && JSONbig.parse(headers);
         this.ipAddress = ipAddress;
         this.duration = duration ? duration.toFixed(5) : null;
         this.created = createdAt ? dayjs(createdAt).format('MM/DD/YY hh:mm:ss a') : null;
