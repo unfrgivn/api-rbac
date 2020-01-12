@@ -1,3 +1,29 @@
+@import '../../assets/styles/variables';
+
 .RequestLogs {
-    
+    .filterContainer {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: solid 1px $gray-lighter;
+
+        .filterInputsContainer {
+            display: flex;
+            flex: 4;            
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+
+        .filterButtonsContainer {
+            display: flex;
+            flex: 1;
+            justify-content: flex-end;
+            align-items: center;
+
+            button {
+                margin-left: .8rem;
+            }
+        }
+    }
 }

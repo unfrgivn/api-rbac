@@ -23,8 +23,9 @@
         }
 
         .statusContainer {        
-            min-width: 6rem;
+            width: 6rem;
             border-right: solid 1px $gray-light;
+            text-align: center;
 
             .statusIcon {
                 margin-bottom: .25rem;
@@ -35,6 +36,8 @@
                 font-weight: $font-weight-bold;
                 text-transform: uppercase;
                 margin-bottom: .25rem;
+                // word-break: break-all;
+                overflow-wrap: break-word;
             }
 
             .statusCode {
@@ -58,7 +61,7 @@
                 .endpoint {
                     display: flex;
                     flex: 1;
-                    font-size: 1.2rem;
+                    font-size: 1rem;
                     color: $gray-dark;
 
                     .requestMethod {
@@ -92,6 +95,12 @@
                             background-color: rgba($error, .15);
                         }
                     }
+
+                    .endpointUrl {
+                        max-width: 90%;
+                        word-break: break-all;
+                        overflow-wrap: break-word;
+                    }
                 }
 
                 .classMethod {
@@ -102,13 +111,13 @@
                 .subRequestBadge {
                     display: inline;
                     background-color: $gray-lighter;
-                    color: $gray;
-                    font-size: .75rem;
+                    color: $gray-dark;
+                    font-size: .65rem;
                     line-height: 1;
                     font-family: $font-family-code;
                     font-weight: $font-weight-normal;
                     align-self: center;
-                    padding: .15rem .4rem;                       
+                    padding: .05rem .4rem;                       
                     margin: 0 0 0 .5rem;
                     border-radius: .25rem;
                 }
