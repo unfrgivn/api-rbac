@@ -94,6 +94,8 @@ const logs = inject('stores')(observer((props) => {
         
     return (
         <div className={classes.RequestLogs}>
+            <div className="alert alert-info">Caution when searching for data and not an endpoint (like a User Id). The results will no longer include the full API call + children, only the matching requests.</div>
+                
             <div className={classes.filterContainer}>
                 <div className={classes.filterInputsContainer}>
                     <Input 
