@@ -41,17 +41,14 @@ class Store {
 
             const {
                 responseStatus,
-                rewindMinutes
+                rewindMinutes,
+                searchQuery,
             } = logQuery || {};
 
             let startDate = this.startDate;
 
             if (rewindMinutes) {
                 startDate = dayjs(this.startDate).subtract(rewindMinutes, 'minute').toDate();
-            }
-
-            if (responseStatus) {
-                
             }
             
             // TODO: Get all logs since last log Id in stack
@@ -64,11 +61,20 @@ class Store {
                     ...(responseStatus && {
                         status: responseStatus,
                     }),
+                    ...(searchQuery && {
+                        $or: [
+                            { endpoint: { '$like': `%${searchQuery}%` }, },
+                            { request_body: { '$like': `%${searchQuery}%` },}
+                        ],
+                    }),
                     $limit: $limit,
                     $skip: $skip,
                     $sort: {
                       created_at: 1
                     }
+                },
+                sequelize: {
+
                 }
             });
 

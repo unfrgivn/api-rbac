@@ -137,6 +137,13 @@ const logs = inject('stores')(observer((props) => {
 
                     <Input 
                         elementType="input" 
+                        label="Search Request"
+                        changed={e => filterHandler(e, "searchQuery")}
+                        wrapperClasses="form-group"
+				        classes="form-control" />
+
+                    <Input 
+                        elementType="input" 
                         label="Rewind Mins"
                         changed={e => filterHandler(e, "rewindMinutes")}
                         wrapperClasses="form-group"
