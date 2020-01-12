@@ -32,6 +32,10 @@
         color: $white; 
     }
 
+    &.btn-outline {
+        background-color: transparent;
+    }
+
     .leftIcon {
         margin-right: .5rem;
     }
