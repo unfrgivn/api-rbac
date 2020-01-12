@@ -1,6 +1,8 @@
 import { observable, action, extendObservable } from 'mobx';
 import { persist } from 'mobx-persist';
 
+import JSONbig from 'json-bigint';
+
 import App from './App';
 import Groups from './Groups';
 import UI from './UI';
@@ -129,7 +131,7 @@ class Store {
         try {
             // Parse JSON
             const parsedData = updateObject(data, {
-                userdata: data.userdata.length ? JSON.parse(data.userdata) : null
+                userdata: data.userdata.length ? JSONbig.parse(data.userdata) : null
             });
             
             const response = await App.feathers.service('users').patch(userId, parsedData);
