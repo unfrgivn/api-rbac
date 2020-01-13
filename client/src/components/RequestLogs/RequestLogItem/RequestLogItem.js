@@ -144,7 +144,13 @@ const requestLogItem = inject('stores')(observer((props) => {
                     <div className={classes.mainRequestContainer}>
                         <div className={classes.left}>
                             <div className={classes.endpoint}>
-                                <label className={[classes.requestMethod, classes[requestLog.requestMethod.toLowerCase()]].join(' ')}>{requestLog.requestMethod}</label>
+                                <label 
+                                    className={[
+                                        classes.requestMethod, 
+                                        (requestLog.requestMethod ? classes[requestLog.requestMethod.toLowerCase()] : '')
+                                    ].join(' ')}>
+                                    {requestLog.requestMethod}
+                                </label>
                                 <span className={classes.endpointUrl}>{`/${requestLog.endpoint}/`}{queryString ? `?${queryString}` : null}</span>
                             </div>
                         

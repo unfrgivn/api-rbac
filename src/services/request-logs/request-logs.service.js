@@ -2,6 +2,8 @@
 const createService = require('feathers-sequelize');
 const createModel = require('../../models/request-logs.model');
 const hooks = require('./request-logs.hooks');
+const Sequelize = require('sequelize');
+const { Op } = Sequelize;
 
 module.exports = function (app) {
 	const Model = createModel(app);
@@ -10,7 +12,15 @@ module.exports = function (app) {
 	const options = {
 		Model,
 		paginate,
-		whitelist: ['$like'],
+		operators: {
+			// $like and $notLike are already included by default in featherjs service
+			$between: Op.between,
+		},
+		whitelist: [
+			'$between',
+			'$like',
+			'$notLike',
+		],
 	};
 
 	// Initialize our service with any options it requires

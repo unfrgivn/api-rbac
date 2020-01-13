@@ -46,19 +46,38 @@ class Store {
                 searchQuery,
             } = logQuery || {};
 
-            let startDate = this.startDate;
+            // Get filter dates
+            let { endDate, startDate = this.startDate } = logQuery || {};
 
+            // Special case for `rewindMinutes` which will take the place of a literal start date
             if (rewindMinutes) {
                 startDate = dayjs(this.startDate).subtract(rewindMinutes, 'minute').toDate();
             }
             
+            // Account for different date formats passed in and use dayjs to standardize to Javascript Date objects
+            startDate = dayjs(startDate).toDate();
+            endDate = dayjs(endDate).toDate();
+
             // TODO: Get all logs since last log Id in stack
+
+
+            // Build date query depending if we have just a lower limit or a range
+            let createdAtQuery = {
+                $gte: startDate,
+            }
+
+            // If we have 2 dates, must use $between operator
+            if (endDate) {
+                createdAtQuery = {
+                    $between: [startDate, endDate],
+                };
+
+                
+            }
 
             const response = await App.feathers.service('request-logs').find({
                 query: {
-                    created_at: {
-                        $gt: startDate,
-                    },
+                    created_at: createdAtQuery,
                     ...(responseStatus && {
                         status: responseStatus,
                     }),
@@ -71,15 +90,12 @@ class Store {
                     ...(requestMethod && {
                         request_method: requestMethod,
                     }),
-                    $limit: $limit,
-                    $skip: $skip,
+                    $limit,
+                    $skip,
                     $sort: {
                       created_at: 1
                     }
                 },
-                sequelize: {
-
-                }
             });
 
             // Add formatted logs to stack
@@ -87,9 +103,19 @@ class Store {
 
             // console.log('FETCHED LOGS RESPONSE:', responseData);
 
+
+            // TODO: Add a check for no logs returned and endDate set
+            // If so then there is no reason to keep polling the server until the query changes
+            // since there will never be anything fetched beyond the upper bound we reached.
+
             let fetchedLogs = [];
 
             let localRequestLogs = this.requestLogs;
+
+            // Trim end of array when it goes over 1000,
+            if (localRequestLogs.length > 1000) {
+                localRequestLogs.splice(-$limit, $limit);
+            }
 
 			if (responseData && responseData.length) {
 
@@ -170,6 +196,7 @@ class Store {
                 // Append new logs to array
                 this.requestLogs = preparedRequests.concat(localRequestLogs);
 
+                // console.log(this.requestLogs.length);
                 // console.log('UPDATED ARRAY:', toJS(this.requestLogs));
             }
 

@@ -73,6 +73,9 @@ const logs = inject('stores')(observer((props) => {
 
     const filterSubmitHandler = (e) => {
         
+         // Clear visible logs when performing a new search
+         RequestLogsStore.clear();
+
         // Remove empty values
         const nonEmptyFilterValues = filterValues && Object.keys(filterValues)
             .filter(key => filterValues[key].length)
@@ -82,10 +85,9 @@ const logs = inject('stores')(observer((props) => {
                     [key]: filterValues[key],
                 };
             }, {});
-            
+        
+        // Re-run query
         setLogQuery(nonEmptyFilterValues);
-
-        RequestLogsStore.clear();
     }
     
     const logRows = requestLogs.length
@@ -183,6 +185,20 @@ const logs = inject('stores')(observer((props) => {
                         elementType="input" 
                         label="Rewind Mins"
                         changed={e => filterHandler(e, "rewindMinutes")}
+                        wrapperClasses="form-group"
+				        classes="form-control" />
+
+                    <Input 
+                        elementType="input" 
+                        label="Start Date"
+                        changed={e => filterHandler(e, "startDate")}
+                        wrapperClasses="form-group"
+				        classes="form-control" />
+
+                    <Input 
+                        elementType="input" 
+                        label="End Date"
+                        changed={e => filterHandler(e, "endDate")}
                         wrapperClasses="form-group"
 				        classes="form-control" />
                 </div>
