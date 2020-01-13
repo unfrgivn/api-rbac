@@ -25,8 +25,13 @@ const asyncAuth = asyncComponent(() => {
 class App extends Component {
 
 	async componentDidMount() {
+
 		// Attempt auto-login
-		const response = await this.props.stores.Auth.authenticate();
+		const { Auth } = this.props.stores;
+
+		if (Auth.isAuthenticated) {
+			Auth.authenticate();
+		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -46,9 +51,9 @@ class App extends Component {
 	}
 
 	render() {
-		const { isSetup } = this.props.stores.App;
-		const { isAuthenticated } = this.props.stores.Auth;
-
+		const { isSetup } = this.props.stores.App || {};
+		const { isAuthenticated } = this.props.stores.Auth || {};
+		
 		let routes = (
 			<Switch> {/* Switch forces only one route to load then stops */}
 				<Route path="/login" component={asyncAuth} />

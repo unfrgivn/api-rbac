@@ -14,8 +14,8 @@ class Store {
     @observable doingAuth = false;
 
     @action authenticate = async () => {
+        
         this.doingAuth = true;
-        this.isAuthenticated = false;
         
         const localJwt = await localForage.getItem('feathers-jwt');
         if (!localJwt) {
