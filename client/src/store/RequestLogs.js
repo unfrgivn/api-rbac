@@ -7,6 +7,8 @@ import UI from './UI';
 
 import Models from './models';
 
+const DEFAULT_LIMIT = 100;
+
 class Store {
     @persist('object', Models.RequestLog) @observable requestLog = new Models.RequestLog();
 	@observable requestLogId = null;
@@ -18,7 +20,7 @@ class Store {
     startDate = new Date(); // Date when application is loaded
 
     skip = 0;
-    limit = 100;
+    limit = DEFAULT_LIMIT;
 
     connect() {        
         App.feathers.service('request-logs').on('created', response => {
@@ -56,7 +58,7 @@ class Store {
             
             // Account for different date formats passed in and use dayjs to standardize to Javascript Date objects
             startDate = dayjs(startDate).toDate();
-            endDate = dayjs(endDate).toDate();
+            endDate = endDate && endDate.length && dayjs(endDate).isValid() ? dayjs(endDate).toDate() : false;
 
             // TODO: Get all logs since last log Id in stack
 
@@ -71,10 +73,8 @@ class Store {
                 createdAtQuery = {
                     $between: [startDate, endDate],
                 };
-
-                
             }
-
+            
             const response = await App.feathers.service('request-logs').find({
                 query: {
                     created_at: createdAtQuery,
@@ -220,6 +220,10 @@ class Store {
         this.requestLogs = [];
         this.isLoaded = false;
         this.error = null;
+        this.startDate = new Date();
+
+        this.skip = 0;
+        this.limit = DEFAULT_LIMIT;
     }
 }
 

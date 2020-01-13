@@ -108,7 +108,7 @@ const requestLogItem = inject('stores')(observer((props) => {
                             </div>
 
                             <div className={classes.subRequestCreatedAt}>
-                                {subRequestLog.created}
+                                ({subRequestLog.duration}s) {subRequestLog.created}
                             </div>
 
                             <div className={classes.subRequestExpandIconContainer} onClick={(e) => expandSubLogHandler(e, subRequestLog._id)}>

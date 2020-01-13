@@ -24,4 +24,12 @@
             }
         }
     }
+
+    .pagerContainer {
+        display: flex;
+        justify-content: flex-end;
+
+        font-size: $font-size-sm;
+        color: $gray;
+    }
 }

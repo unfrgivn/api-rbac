@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
+import dayjs from 'dayjs';
 
 import RequestLogItem from './RequestLogItem/RequestLogItem';
 import Input from '../UI/Input/Input';
@@ -9,204 +10,266 @@ import classes from './RequestLogs.module.scss';
 
 let intervalFetchLogs = null;
 
+const setLogPolling = (callback, args = []) => {
+    // Clear old polling
+    clearInterval(intervalFetchLogs);   
+
+    intervalFetchLogs = setInterval(async () => {
+        await callback(...args);
+    }, 2000);
+}
+
+
 const logs = inject('stores')(observer((props) => {
 
     const { RequestLogs: RequestLogsStore } = props.stores;
     const { requestLogs } = RequestLogsStore || [];
 
+    const logsLoadHandler = useCallback(RequestLogsStore.load, []) 
+    const logsClearHandler = useCallback(RequestLogsStore.clear, []) 
+
     const [ pauseLogs, setPauseLogs ] = useState(null);
     const [ logQuery, setLogQuery ] = useState(null);
-    const [ filterValues, setFilterValues ] = useState(null);
+
+    const [filterForm, setFilterForm] = React.useState({
+        loaded: false,
+        controls: [
+            {
+                key: 'requesType',
+                label: 'Status',
+                elementType: 'select',
+                value: "",
+                defaultValue: "",  
+                elementConfig: {
+                    options: [
+                        {
+                            value: null,
+                            displayValue: 'All',
+                        },
+                        {
+                            value: 'GET',
+                            displayValue: 'GET',
+                        },
+                        {
+                            value: 'POST',
+                            displayValue: 'POST',
+                        },
+                        {
+                            value: 'PUT',
+                            displayValue: 'PUT',
+                        },
+                        {
+                            value: 'PATCH',
+                            displayValue: 'PATCH',
+                        },
+                        {
+                            value: 'DELETE',
+                            displayValue: 'DELETE',
+                        },
+                    ]
+                }
+            },
+            {
+                key: 'responseStatus',
+                label: 'Status',
+                elementType: 'select',
+                value: "",
+                defaultValue: "",  
+                elementConfig: {
+                    options: [
+                        {
+                            value: null,
+                            displayValue: 'All',
+                        },
+                        {
+                            value: 200,
+                            displayValue: '200 - Success',
+                        },
+                        {
+                            value: 400,
+                            displayValue: '400 - Bad Request',
+                        },
+                        {
+                            value: 401,
+                            displayValue: '401 - Access Denied',
+                        },
+                        {
+                            value: 403,
+                            displayValue: '403 - Forbidden',
+                        },
+                        {
+                            value: 404,
+                            displayValue: '404 - Not Found',
+                        },
+                        {
+                            value: 500,
+                            displayValue: '500 - API Error',
+                        },
+                    ]
+                },                
+            },
+            {
+                key: 'searchQuery',
+                label: 'Search Request',
+                elementType: 'input',
+                value: "",
+                defaultValue: "",  
+            },
+            {
+                key: 'rewindMinutes',
+                label: 'Rewind Mins',
+                elementType: 'input',
+                value: "",      
+                defaultValue: "",            
+            },
+            {
+                key: 'startDate',
+                label: 'Start Date',
+                elementType: 'input',
+                value: "",       
+                defaultValue: "",           
+            },
+            {
+                key: 'endDate',
+                label: 'End Date',
+                elementType: 'input',
+                value: "",   
+                defaultValue: "",             
+            }
+        ]
+    });
+
+    const queryLogsHandler = useCallback(() => setLogPolling(logsLoadHandler, [true, logQuery]), [logsLoadHandler, logQuery]);
+
+    // Extract form values
+    const getFilterValues = useCallback((formItems) => formItems
+        .filter(item => item.value.length)
+        .reduce((obj, item) => {
+            return {
+                ...obj,
+                [item.key]: item.value,
+            };
+        }, {}), []);
 
     // On mount
     useEffect(() => {
-        setLogPolling(true, logQuery);
+        setLogPolling(logsLoadHandler);
         
         return () => {
             // Remove all logs on unmount and reset startData
-            RequestLogsStore.clear();
+            logsClearHandler();
             clearInterval(intervalFetchLogs);   
         };
-    }, []);
+    }, [logsClearHandler, logsLoadHandler]);
 
     // When updating logQuery
     useEffect(() => {
-        // Reset query to beginning when updating query
-        RequestLogsStore.skip = 0;
-        RequestLogsStore.startDate = new Date();
+        // Reset query and clear visible logs when performing a new search
+        logsClearHandler();
         
-        setLogPolling(true, logQuery);
+        queryLogsHandler();
         
-    }, [logQuery]);
+    }, [logQuery, logsClearHandler, queryLogsHandler]);
     
+    // Pause logs
     useEffect(() => {
         if (pauseLogs) {
-            clearInterval(intervalFetchLogs);   
+            if (intervalFetchLogs) {
+                clearInterval(intervalFetchLogs);   
+            }
+            
         } else {
-            setLogPolling(true, logQuery);
+            queryLogsHandler();
         }
 
-    }, [pauseLogs]);   
+    }, [pauseLogs, queryLogsHandler]);
 
-    const setLogPolling = (loadNextPage, query) => {
-        // Clear old polling
-        clearInterval(intervalFetchLogs);   
-
-        intervalFetchLogs = setInterval(async () => {
-            await RequestLogsStore.load(loadNextPage, query);
-        }, 2000);
-    }
-
+    
     const filterHandler = (e, controlName) => {
-
-        const localFilterValues = filterValues || {};
-
-        const newFilterValues = e.target.value 
-            ? {
-                ...localFilterValues,
-                [controlName]: e.target.value,
-            }
-            : Object.keys(localFilterValues).filter(key => key !== controlName);
-
-        setFilterValues(newFilterValues);
+        const newFilterControls = filterForm.controls.map(item => (item.key === controlName)
+                ? {
+                    ...item,
+                    value: e.target.value,
+                }
+                : item
+            );
+        
+        setFilterForm({
+            filterForm,
+            controls: newFilterControls,
+        });
     }
 
-    const filterSubmitHandler = (e) => {
+    const filterSubmitHandler = () => {
         
-         // Clear visible logs when performing a new search
-         RequestLogsStore.clear();
-
-        // Remove empty values
-        const nonEmptyFilterValues = filterValues && Object.keys(filterValues)
-            .filter(key => filterValues[key].length)
-            .reduce((obj, key) => {
-                return {
-                    ...obj,
-                    [key]: filterValues[key],
-                };
-            }, {});
+        const filterValues = getFilterValues(filterForm.controls);
+        
+        // Turn off pause
+        setPauseLogs(false);
         
         // Re-run query
-        setLogQuery(nonEmptyFilterValues);
+        setLogQuery(filterValues);
+    }
+
+    const filtersReset = async () => {
+
+        // Clear existing logs
+        logsClearHandler();
+
+        // Reset all form filter values
+        const newFilterControls = filterForm.controls.map(item => {
+                return {
+                    ...item,
+                    value: item.defaultValue || "",
+                }
+            });
+            
+        // Reset form
+        await setFilterForm({
+            filterForm,
+            controls: newFilterControls,
+        });
+
+        // Extract filter
+        // const filterValues = getFilterValues(newFilterControls);
+        
+        // Resubmit the log query with blank values so it'll resume defualt listening state
+        setLogQuery(null);
     }
     
     const logRows = requestLogs.length
         ? requestLogs.map(log => <RequestLogItem key={log._id} requestLog={log} />)
         : <div>Listening for logs...</div>;
         
+    const logsPagerInfo = requestLogs.length
+        ? `Showing ${requestLogs.length} requests starting ${dayjs(requestLogs[0].created).format('MM/DD/YYYY HH:mm a')}`
+        : null;
+
     return (
         <div className={classes.RequestLogs}>
             <div className="alert alert-info">Caution when searching for data and not an endpoint (like a User Id). The results will no longer include the full API call + children, only the matching requests.</div>
                 
             <div className={classes.filterContainer}>
                 <div className={classes.filterInputsContainer}>
-                <Input 
-                        elementType="select" 
-                        label="Status"
-                        elementConfig={{
-                            options: [
-                                {
-                                    value: null,
-                                    displayValue: 'All',
-                                },
-                                {
-                                    value: 200,
-                                    displayValue: '200 - Success',
-                                },
-                                {
-                                    value: 400,
-                                    displayValue: '400 - Bad Request',
-                                },
-                                {
-                                    value: 401,
-                                    displayValue: '401 - Access Denied',
-                                },
-                                {
-                                    value: 403,
-                                    displayValue: '403 - Forbidden',
-                                },
-                                {
-                                    value: 404,
-                                    displayValue: '404 - Not Found',
-                                },
-                                {
-                                    value: 500,
-                                    displayValue: '500 - API Error',
-                                },
-                            ]
-                        }}
-                        changed={e => filterHandler(e, "responseStatus")}
-                        wrapperClasses="form-group"
-				        classes="form-control" />
-
-                    <Input 
-                        elementType="select" 
-                        label="Request Type"
-                        elementConfig={{
-                            options: [
-                                {
-                                    value: null,
-                                    displayValue: 'All',
-                                },
-                                {
-                                    value: 'GET',
-                                    displayValue: 'GET',
-                                },
-                                {
-                                    value: 'POST',
-                                    displayValue: 'POST',
-                                },
-                                {
-                                    value: 'PUT',
-                                    displayValue: 'PUT',
-                                },
-                                {
-                                    value: 'PATCH',
-                                    displayValue: 'PATCH',
-                                },
-                                {
-                                    value: 'DELETE',
-                                    displayValue: 'DELETE',
-                                },
-                            ]
-                        }}
-                        changed={e => filterHandler(e, "requestMethod")}
-                        wrapperClasses="form-group"
-				        classes="form-control" />
-                    
-                    <Input 
-                        elementType="input" 
-                        label="Search Request"
-                        changed={e => filterHandler(e, "searchQuery")}
-                        wrapperClasses="form-group"
-				        classes="form-control" />
-
-                    <Input 
-                        elementType="input" 
-                        label="Rewind Mins"
-                        changed={e => filterHandler(e, "rewindMinutes")}
-                        wrapperClasses="form-group"
-				        classes="form-control" />
-
-                    <Input 
-                        elementType="input" 
-                        label="Start Date"
-                        changed={e => filterHandler(e, "startDate")}
-                        wrapperClasses="form-group"
-				        classes="form-control" />
-
-                    <Input 
-                        elementType="input" 
-                        label="End Date"
-                        changed={e => filterHandler(e, "endDate")}
-                        wrapperClasses="form-group"
-				        classes="form-control" />
+                {
+                    filterForm.controls.map(item => <Input 
+                            {...item}
+                            changed={(e) => filterHandler(e, item.key)}
+                            wrapperClasses="form-group"
+                            classes="form-control"
+                            />
+                    )
+                }
                 </div>
                 <div className={classes.filterButtonsContainer}>
-                    <Button className={`btn ${filterValues && Object.keys(filterValues).length ? 'btn-info' : 'btn-outline btn-outline-info'}`} clicked={e => filterSubmitHandler(e)}>Filter</Button>
-                    <Button className={`btn ${pauseLogs ? 'btn-warning' : 'btn-outline btn-outline-warning'}`} clicked={() => setPauseLogs(!pauseLogs)}>Pause</Button>
-                    <Button className="btn btn-error" clicked={() => RequestLogsStore.clear()}>Clear</Button>
+                    <Button className={`btn ${logQuery && Object.keys(logQuery).length ? 'btn-info' : 'btn-outline btn-outline-info'}`} clicked={filterSubmitHandler}>Filter</Button>
+                    <Button className={`btn ${pauseLogs ? 'btn-warning' : 'btn-outline btn-outline-warning'}`} clicked={() => setPauseLogs(!pauseLogs)}>{pauseLogs ? `Resume` : `Pause`}</Button>
+                    <Button className="btn btn-outline-danger" clicked={() => logsClearHandler()}>Clear</Button>
+                    <Button className="btn btn-outline-dark" clicked={filtersReset}>Reset</Button>
                 </div>
+            </div>
+            <div className={classes.pagerContainer}>
+                <div>{logsPagerInfo}</div>
             </div>
             {logRows}
         </div>            
