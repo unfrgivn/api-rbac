@@ -35,7 +35,7 @@ const logs = inject('stores')(observer((props) => {
         loaded: false,
         controls: [
             {
-                key: 'requesType',
+                key: 'requestMethod',
                 label: 'Status',
                 elementType: 'select',
                 value: "",
