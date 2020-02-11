@@ -28,7 +28,7 @@ class Store {
     
             const createdLog = this.requestLog(response);
 
-            this.groups.push(createdLog);
+            this.requestLogs.push(createdLog);
         });
     }
 
@@ -43,6 +43,7 @@ class Store {
 
             const {
                 requestMethod,
+                applicationId,
                 responseStatus,
                 rewindMinutes,
                 searchQuery,
@@ -89,6 +90,9 @@ class Store {
                     }),
                     ...(requestMethod && {
                         request_method: requestMethod,
+                    }),
+                    ...(applicationId && {
+                        application_id: applicationId,
                     }),
                     $limit,
                     $skip,

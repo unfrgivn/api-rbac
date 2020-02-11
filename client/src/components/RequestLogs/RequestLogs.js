@@ -7,6 +7,8 @@ import Input from '../UI/Input/Input';
 import Button from '../UI/Button/Button';
 
 import classes from './RequestLogs.module.scss';
+import { FaOtter } from 'react-icons/fa';
+import { set } from 'mobx';
 
 let intervalFetchLogs = null;
 
@@ -22,16 +24,18 @@ const setLogPolling = (callback, args = []) => {
 
 const logs = inject('stores')(observer((props) => {
 
-    const { RequestLogs: RequestLogsStore } = props.stores;
+    const { Applications: ApplicationsStore, RequestLogs: RequestLogsStore } = props.stores;
     const { requestLogs } = RequestLogsStore || [];
+    const { applications } = ApplicationsStore || [];
 
     const logsLoadHandler = useCallback(RequestLogsStore.load, []) 
     const logsClearHandler = useCallback(RequestLogsStore.clear, []) 
 
     const [ pauseLogs, setPauseLogs ] = useState(null);
     const [ logQuery, setLogQuery ] = useState(null);
+    
 
-    const [filterForm, setFilterForm] = React.useState({
+    const [filterForm, setFilterForm] = useState({
         loaded: false,
         controls: [
             {
@@ -109,6 +113,21 @@ const logs = inject('stores')(observer((props) => {
                 },                
             },
             {
+                key: 'applicationId',
+                label: 'Apps',
+                elementType: 'select',
+                value: "",
+                defaultValue: "",  
+                elementConfig: {
+                    options: [
+                        {
+                            value: null,
+                            displayValue: 'All',
+                        },
+                    ]
+                }
+            },
+            {
                 key: 'searchQuery',
                 label: 'Search Request',
                 elementType: 'input',
@@ -141,6 +160,38 @@ const logs = inject('stores')(observer((props) => {
 
     const queryLogsHandler = useCallback(() => setLogPolling(logsLoadHandler, [true, logQuery]), [logsLoadHandler, logQuery]);
 
+    const updateFormOptions = useCallback((key, options) => {
+
+        const currentOptions = filterForm.controls
+            .filter(item => item.key === key)
+            .map(item => item.elementConfig && item.elementConfig.options)[0];
+
+        // Return otherwise this will run continously due to improperly set prop re-render
+        if (options.length === currentOptions.length) {
+            return;
+        }
+
+        const newFilterControls = filterForm.controls.map(item => {
+            if (item.key === key) {
+                return {
+                    ...item,
+                    elementConfig: {
+                        ...item.elementConfig,
+                        options: options,
+                    }
+                }
+            } else {
+                return item;
+            }
+        });
+        
+        setFilterForm({
+            filterForm,
+            controls: newFilterControls,
+        });
+        
+    }, [filterForm]);
+    
     // Extract form values
     const getFilterValues = useCallback((formItems) => formItems
         .filter(item => item.value.length)
@@ -183,6 +234,26 @@ const logs = inject('stores')(observer((props) => {
         }
 
     }, [pauseLogs, queryLogsHandler]);
+
+    useEffect(() => {
+        if (applications && applications.length) {
+
+            const newOptions = applications.map(item => {
+                return {
+                    value: item.id,
+                    displayValue: item.name
+                };
+            });
+
+            const allOptions = [{
+                value: null,
+                displayValue: 'All',
+            }].concat(newOptions);
+
+            updateFormOptions('applicationId', allOptions);
+        }
+    
+    }, [applications, updateFormOptions]);
 
     
     const filterHandler = (e, controlName) => {

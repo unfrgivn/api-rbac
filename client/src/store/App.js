@@ -7,6 +7,7 @@ import auth from '@feathersjs/authentication-client';
 import localForage from 'localforage';
 
 import Actions from './Actions';
+import Applications from './Applications';
 import Groups from './Groups';
 import Keys from './Keys';
 import RequestLogs from './RequestLogs';
@@ -68,6 +69,7 @@ class Store {
 		// Don't reconnect store listeners or they will stack
 		if (!this.socketListenersConnected) {
 			Actions.connect();
+			Applications.connect();
 			Groups.connect();
 			Keys.connect();
 			RequestLogs.connect();
@@ -127,7 +129,8 @@ class Store {
 	initStoreData = async () => {
 		console.log('REFRESHING STORES');
 
-        Actions.load();
+		Actions.load();
+		Applications.load();
         Groups.load();
 		Users.load();
     }
