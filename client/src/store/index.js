@@ -1,4 +1,5 @@
 import App from './App';
+import Applications from './Applications';
 import Auth from './Auth';
 import Actions from './Actions';
 import Groups from './Groups';
@@ -9,6 +10,7 @@ import UI from './UI';
 
 const stores = {
 	App,
+	Applications,
 	Auth,
 	Actions,
 	Groups,
