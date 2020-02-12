@@ -8,7 +8,7 @@ module.exports = function (app) {
 	const accessKeys = sequelizeClient.define('access_keys', {
 		application_id: {
 			type: DataTypes.INTEGER,
-			allowNull: false
+			allowNull: true
 		},
 		access_key: {
 			type: DataTypes.STRING(500),

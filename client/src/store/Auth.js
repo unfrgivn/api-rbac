@@ -1,6 +1,5 @@
 import { observable, action } from 'mobx';
 import { persist } from 'mobx-persist';
-import localForage from 'localforage';
 
 import App from './App';
 
@@ -17,30 +16,50 @@ class Store {
         
         this.doingAuth = true;
         
-        const localJwt = await localForage.getItem('feathers-jwt');
-        if (!localJwt) {
+        try {
+            const response = await App.feathers.reAuthenticate();
+            console.log('REAUTH', response);
+
+            // const accessToken = await App.feathers.authentication.getAccessToken();
+            // console.log('Access Token', accessToken);
+        
             this.doingAuth = false;
 
             App.isInitialized();
 
             return;
-        }
 
-        try {
             // Try to authenticate using the JWT from localStorage
-            const response = await App.feathers.authenticate();
+            // const response = App.feathers.reAuthenticate();
+ 
+            // console.log('Reauth', accessToken, response);
+            
+            // NOTE: When upgrading to feathersjs v4 use reAuthenticate method
+            // const feathersAuth = await App.feathers.get('authentication');
+            // const { user: feathersUser, accessToken: feathersAccessToken } = feathersAuth || {};
 
-            if (response) {
-                this.isAuthenticated = true;
-                this.token = response.accessToken;                
-                App.initStoreData();
-            } 
+            // console.log('EXISTING FEATHERS AUTH:', feathersAuth);
 
-            return response;
+            // const feathersAuthResponse = (feathersUser && feathersAccessToken) && await App.feathers.reAuthenticate();
+       
+            // console.log(`${feathersAccessToken ? 'RE-' : ''}AUTHENTICATING WITH TRANSPORT API`, feathersAuthResponse);
+            
+
+            // const response = await App.feathers.authenticate();
+
+            // if (response) {
+            //     this.isAuthenticated = true;
+            //     this.token = response.accessToken;                
+            //     App.initStoreData();
+            // } 
+
+            // return response;
 
         } catch (error) {
-            // Delete the stored key since it's no good
-            await localForage.removeItem('feathers-jwt');
+            console.log('ERROR:', error);
+
+            // Logout and delete the access token since it's no good
+            await App.feathers.logout();
 
             this.doingAuth = false;
             this.isAuthenticated = false;
@@ -103,6 +122,8 @@ class Store {
     }
 
     @action logout = async () => {
+        await App.feathers.logout();
+
         return this.clearStorage();        
     }
     
@@ -110,8 +131,6 @@ class Store {
         this.isAuthenticated = false;
 		this.token = null;
         this.user = new Models.User();
-        
-        localForage.clear();
 
 		return true;
 	};
