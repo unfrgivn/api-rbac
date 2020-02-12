@@ -7,10 +7,28 @@ module.exports = function (app) {
 	const sequelizeClient = app.get('sequelizeClient');
 	const actions = sequelizeClient.define('actions', {
 		endpoint: {
-			type: DataTypes.STRING,
+			type: DataTypes.STRING(500),
 			allowNull: false,
 			unique: true,
-		}
+		},
+		request_method: {
+			type: DataTypes.STRING(10),
+		},
+		summary: {
+			type: DataTypes.STRING(1000),
+		},
+		description: {
+			type: DataTypes.TEXT,
+		},
+		params: {
+			type: DataTypes.JSON,
+		},
+		loglevel: {
+			type: DataTypes.STRING(50),
+		},
+		endpoint_data: {
+			type: DataTypes.JSON
+		},
 	}, {		
 		// don't delete database entries but set the newly added attribute deletedAt
 		// to the current date (when deletion was done). paranoid will only work if
