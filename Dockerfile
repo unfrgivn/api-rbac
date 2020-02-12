@@ -1,5 +1,5 @@
 # Build React front-end
-FROM node:11 as builder
+FROM node:12 as builder
 
 ENV NODE_ENV=production
 
@@ -14,7 +14,7 @@ COPY ./client .
 RUN yarn build
 
 # Build Feathersjs app
-FROM node:11
+FROM node:12
 
 ENV NODE_ENV=production
 
