@@ -11,29 +11,31 @@
     "baseUrl": "API_URL",
     "endpointsRoute": "API_ENDPOINTS_ROUTE",
     "headers": {
-      "Accept": "application/json",
-      "X-RBAC-MANAGER": true
+				"Accept": "application/json",
+				"X-RBAC-MANAGER": true
     }
   },
   "mysql": "DB_CONN",
   "authentication": {
-    "entity": "user",
-    "service": "users",
     "secret": "AUTH_SECRET",
-    "authStrategies": [
+    "strategies": [
       "jwt",
       "local"
     ],
-    "jwtOptions": {
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
       "header": {
         "typ": "access"
       },
       "audience": "AUTH_AUDIENCE",
+      "subject": "anonymous",
       "issuer": "AUTH_ISSUER",
       "algorithm": "HS256",
       "expiresIn": "AUTH_EXPIRES"
     },
     "local": {
+      "entity": "user",
       "usernameField": "username",
       "passwordField": "password"
     }

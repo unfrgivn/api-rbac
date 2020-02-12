@@ -4,7 +4,6 @@ import io from 'socket.io-client';
 import feathers from '@feathersjs/feathers';
 import socketio from '@feathersjs/socketio-client';
 import auth from '@feathersjs/authentication-client';
-import localForage from 'localforage';
 
 import Actions from './Actions';
 import Applications from './Applications';
@@ -39,14 +38,15 @@ class Store {
 		console.log(`CONNECTING TO ${FEATHERS_HOST}`);
 		const socket = io(FEATHERS_HOST, options);
 
-		this.feathers = feathers()
-			.configure(socketio(socket, {
-				timeout: 5000 // Increase timeout for going out to API
-			}));
+		this.feathers = feathers();
+
+		this.feathers.configure(socketio(socket, {
+			timeout: 5000 // Increase timeout for going out to API
+		}));
 
 		this.feathers.configure(auth({
-			storage: localForage
-		  }));
+			storageKey: 'auth'
+		}));
 
 		// Set up socket connections
 		this.connect();
@@ -85,9 +85,9 @@ class Store {
                 query: {
                     $limit: 0
                 }
-            });
-
-						console.log(`INITIALIZING.... FOUND ${totalUsers.total} USERS`);
+			});
+			
+			console.log(`INITIALIZING.... FOUND ${totalUsers.total} USERS`);
 
             if (totalUsers.total < 1) {
                 // App is not initialized, kick the setup screen

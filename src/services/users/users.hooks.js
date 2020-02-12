@@ -29,7 +29,7 @@ module.exports = {
 			// No provider passed means the call came from inside such as the initial lookup after auth
 			// and in this case we would not yet have an accessToken passed in the query
 			commonHooks.iff(
-				context => !("provider" in context.params) || context.params.authenticated,
+				context => !("provider" in context.params) || context.params.user,
 				authenticate('jwt'),
 				addAssociations({
 					models: [{
@@ -69,7 +69,7 @@ module.exports = {
 						return true;
 					}
 				},
-				hashPassword(), 
+				hashPassword('password'), 
 				authenticate('jwt'), 
 				setUserData	  
 			// No auth token, only return the total number of users to see if app has been initialized
@@ -88,15 +88,15 @@ module.exports = {
 				}
 			},
 			// writeJSONFields(['userdata']),
-			hashPassword())
+			hashPassword('password'))
 		],
 		update: [ 
-			hashPassword(), 
+			hashPassword('password'), 
 			// writeJSONFields(['userdata']), 
 			authenticate('jwt') 
 		],
 		patch: [ 
-			hashPassword(), 
+			hashPassword('password'), 
 			// writeJSONFields(['userdata']), 
 			authenticate('jwt') 
 		],

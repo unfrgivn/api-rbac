@@ -3,7 +3,14 @@ const log = require('./hooks/log');
 
 module.exports = {
 	before: {
-		all: [ log() ],
+		all: [ 
+			log(), 
+			// context => {
+			// 	// console.log(context);
+			// 	const authentication = context.app.get('authentication');
+			// 	console.log('AUTH', authentication);
+			// },
+		],
 		find: [],
 		get: [],
 		create: [],
