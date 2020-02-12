@@ -20,6 +20,12 @@ class Store {
             const response = await App.feathers.reAuthenticate();
             console.log('REAUTH', response);
 
+            if (response) {
+                this.isAuthenticated = true;
+                this.token = response.accessToken;                
+                App.initStoreData();
+            } 
+            
             // const accessToken = await App.feathers.authentication.getAccessToken();
             // console.log('Access Token', accessToken);
         
