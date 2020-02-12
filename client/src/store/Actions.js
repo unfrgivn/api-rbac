@@ -46,7 +46,7 @@ class Store {
 
             this.actions = response.data;
 
-            console.log('ACTIONS LOADED', response);
+            // console.log('ACTIONS LOADED', response);
             // True regardless of whether actions are populated or empty bc we may not have created actions yet
             this.isLoaded = true;
             
@@ -78,7 +78,7 @@ class Store {
         try {
             const response = await App.feathers.service('sync').find();
 
-            console.log('ACTIONS SYNCED', response);
+            // console.log('ACTIONS SYNCED', response);
 
             this.isSyncing = false;
             
