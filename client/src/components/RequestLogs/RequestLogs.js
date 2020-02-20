@@ -128,6 +128,13 @@ const logs = inject('stores')(observer((props) => {
                 }
             },
             {
+                key: 'userId',
+                label: 'API User ID',
+                elementType: 'input',
+                value: "",
+                defaultValue: "",  
+            },
+            {
                 key: 'searchQuery',
                 label: 'Search Request',
                 elementType: 'input',
@@ -326,7 +333,7 @@ const logs = inject('stores')(observer((props) => {
                     filterForm.controls.map(item => <Input 
                             {...item}
                             changed={(e) => filterHandler(e, item.key)}
-                            wrapperClasses="form-group"
+                            wrapperClasses={classes.formGroup}
                             classes="form-control"
                             />
                     )
