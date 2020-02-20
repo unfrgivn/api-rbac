@@ -43,6 +43,7 @@ class Store {
 
             const {
                 requestMethod,
+                userId,
                 applicationId,
                 responseStatus,
                 rewindMinutes,
@@ -93,6 +94,9 @@ class Store {
                     }),
                     ...(applicationId && {
                         application_id: applicationId,
+                    }),
+                    ...(userId && {
+                        user_id: userId,
                     }),
                     $limit,
                     $skip,
