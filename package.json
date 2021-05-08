@@ -49,7 +49,7 @@
     "feathers-hooks-common": "^4.19.4",
     "feathers-sequelize": "^6.1.0",
     "helmet": "^3.13.0",
-    "json-bigint": "^0.3.0",
+    "json-bigint": "^1.0.0",
     "localStorage": "^1.0.4",
     "mysql2": "^1.6.4",
     "sequelize": "^4.38.0",
